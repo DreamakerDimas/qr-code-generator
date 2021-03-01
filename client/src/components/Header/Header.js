@@ -1,16 +1,29 @@
 import React from 'react';
-import {AppBar, Button} from '@material-ui/core';
-import Logo from '../Logo/Logo'
+import { AppBar, Button, Toolbar, Grid } from '@material-ui/core';
+import Logo from '../Logo/Logo';
 
 // user
 const Header = () => {
-    return (
-    <AppBar color="primary" position="fixed">
-        <Logo />
-        <Button>QR Generator</Button>
-        <Button>Profile</Button>
-        <Button>LogOut</Button>
-    </AppBar>)
-}
+  return (
+    <AppBar color="primary" position="static">
+      <Grid container direction={'row'} justify="space-between">
+        <Grid item xs={1}>
+          <Logo />
+        </Grid>
+        <Grid
+          container
+          xs={11}
+          direction={'row'}
+          justify="flex-end"
+          align="center"
+        >
+          <Button>QR Generator</Button>
+          <Button>QR Generator</Button>
+          {/* userName:hover -> Menu(profile, logout) */}
+        </Grid>
+      </Grid>
+    </AppBar>
+  );
+};
 
 export default Header;
