@@ -6,21 +6,28 @@ import {
   Entity,
 } from 'typeorm';
 
+enum Roles {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+}
+
+const enumRolesArr = ['USER', 'ADMIN'];
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ length: 25 })
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
   password: string;
 
-  @Column()
+  @Column({ enum: enumRolesArr })
   role: string;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
