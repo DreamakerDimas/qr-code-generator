@@ -11,8 +11,6 @@ enum Roles {
   ADMIN = 'ADMIN',
 }
 
-const enumRolesArr = ['USER', 'ADMIN'];
-
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -27,8 +25,11 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ enum: enumRolesArr })
-  role: string;
+  @Column({
+    type: 'enum',
+    enum: Roles,
+  })
+  role: Roles;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
