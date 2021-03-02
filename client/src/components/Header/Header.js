@@ -6,19 +6,19 @@ import Logo from '../Logo/Logo';
 const Header = () => {
   return (
     <AppBar color="primary" position="static">
-      <Grid container direction={'row'} justify="space-between">
+      <Grid container direction="row" justify="space-between">
         <Grid item xs={1}>
           <Logo />
         </Grid>
         <Grid
           container
           xs={11}
-          direction={'row'}
+          direction="row"
           justify="flex-end"
           align="center"
         >
           <Button>QR Generator</Button>
-          <Button>QR Generator</Button>
+          <Button>/UserName/</Button>
           {/* userName:hover -> Menu(profile, logout) */}
         </Grid>
       </Grid>
