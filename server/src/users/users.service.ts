@@ -20,6 +20,10 @@ export class UserService {
     return await this.userRepository.findOneOrFail(id);
   }
 
+  async findOne(params: object): Promise<User | null> {
+    return await this.userRepository.findOne(params);
+  }
+
   async create(userDto: CreateUserDto): Promise<User> {
     return await this.userRepository.save(userDto);
   }

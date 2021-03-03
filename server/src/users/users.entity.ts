@@ -5,18 +5,13 @@ import {
   CreateDateColumn,
   Entity,
 } from 'typeorm';
-
-enum Roles {
-  USER = 'USER',
-  ADMIN = 'ADMIN',
-}
-
+import { Role } from '../constants';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ length: 25 })
+  @Column()
   name: string;
 
   @Column({ unique: true })
@@ -27,9 +22,10 @@ export class User {
 
   @Column({
     type: 'enum',
-    enum: Roles,
+    enum: Role,
+    default: Role.USER,
   })
-  role: Roles;
+  role: Role;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
