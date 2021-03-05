@@ -2,6 +2,8 @@ import * as path from 'path';
 import MulterGoogleStorage from 'multer-google-storage';
 import { googleCloudSettings } from '../../constants';
 
+// https://googleapis.dev/nodejs/storage/latest/Bucket.html
+
 export const getIdFromPath = (file) => {
   const fullFilename = file[0].filename; // get string
   return fullFilename.split('/')[1].split('.')[0]; // slice string

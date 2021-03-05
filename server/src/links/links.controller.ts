@@ -6,7 +6,6 @@ import {
   Param,
   Post,
   Put,
-  Req,
   Request,
   UploadedFiles,
   UseGuards,
@@ -15,7 +14,7 @@ import {
 import { LinksService } from './links.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
 
-import { Role, storageURL } from '../constants';
+import { Role } from '../constants';
 import { Roles } from 'src/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
@@ -24,11 +23,8 @@ import { CreateLinkDto } from './dto/create-link.dto';
 import { UpdateLinkDto } from './dto/update-link.dto';
 import {
   getIdFromPath,
-  userStorageDelete,
   userStorageUpload,
 } from './storageMulter/storageMulter';
-
-import fs from 'fs';
 
 @Roles(Role.ADMIN) // !!! change on USER
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -37,19 +33,19 @@ export class LinksController {
   constructor(private linksService: LinksService) {}
 
   // Role USER
-  // GET ALL
+  // GET ALL FOR ME
   @Get()
-  async getAll(@Request() req) {
+  async getAll(@Request() req): Promise<Links[] | []> {
     return await this.linksService.getAll(req.user.id);
   }
 
-  // GET ONE
+  // GET ONE OF MY
   @Get(':id')
-  async getOne(@Param() params, @Request() req) {
-    return await this.linksService.getOne(params.id, req.user.id);
+  async getOne(@Param('id') id: string, @Request() req): Promise<Links | null> {
+    return await this.linksService.getOne(id, req.user.id);
   }
 
-  // POST CREATE
+  // POST CREATE MY
   @Post()
   @UseInterceptors(
     FilesInterceptor('file', null, {
@@ -61,7 +57,6 @@ export class LinksController {
     @Body() body,
     @Request() req,
   ): Promise<Links> {
-    console.log(body);
     const linkId = getIdFromPath(file);
     const fileUrl = file.pop().path;
 
@@ -76,26 +71,16 @@ export class LinksController {
     return await this.linksService.create(linkObj);
   }
 
-  // PUT UPDATE
+  // PUT UPDATE STATUS OF MY
   @Put()
-  async update(@Request() req, @Body() body: UpdateLinkDto) {
+  async update(@Request() req, @Body() body: UpdateLinkDto): Promise<Links> {
     return await this.linksService.update(body.id, req.user.id, body.isActive);
   }
 
-  // DELETE
+  // DELETE MY
   @Delete(':id')
   async remove(@Param() params, @Request() req) {
-    const removeFile = async () => {
-      const path = storageURL + `${req.user.id}/${params.id}-${req.user.id}*`;
-
-      return await fs.unlink(path, null);
-    };
-    return await this.linksService.remove(params.id, req.user.id, removeFile);
+    // add remove api
+    return await this.linksService.remove(params.id, req.user.id);
   }
 }
-
-// filename: (req, file, cb) => {
-//     const fileNameSplit = file.originalname.split('.');
-//     const fileExt = fileNameSplit.pop();
-//     cb(null, `${req.body.userId}/${Date.now()}-${req.body.userId}.${fileExt}`);
-//   },

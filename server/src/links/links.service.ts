@@ -11,11 +11,11 @@ export class LinksService {
     readonly linksRepository: Repository<Links>,
   ) {}
 
-  async getAll(userId) {
+  async getAll(userId): Promise<Links[] | []> {
     return await this.linksRepository.find({ userId });
   }
 
-  async getOne(id, userId) {
+  async getOne(id, userId): Promise<Links | null> {
     return await this.linksRepository.findOne({ id, userId });
   }
 
@@ -23,7 +23,7 @@ export class LinksService {
     return await this.linksRepository.save(link);
   }
 
-  async update(id, userId, isActive): Promise<any> {
+  async update(id, userId, isActive): Promise<Links> {
     await this.linksRepository.update(
       {
         id,
@@ -34,9 +34,7 @@ export class LinksService {
     return await this.linksRepository.findOne({ id, userId });
   }
 
-  async remove(id, userId, removeFile?): Promise<any> {
-    const deleted = await this.linksRepository.delete({ id, userId });
-    if (deleted.affected > 0) await removeFile();
-    return deleted;
+  async remove(id, userId): Promise<any> {
+    return await this.linksRepository.delete({ id, userId });
   }
 }

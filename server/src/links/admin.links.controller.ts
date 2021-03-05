@@ -34,13 +34,13 @@ export class AdminLinksController {
   // Role: ADMIN
   // GET ALL
   @Get(':userId')
-  async getAll(@Param() params) {
+  async getAll(@Param() params): Promise<Links[] | []> {
     return await this.linksService.getAll(params.userId);
   }
 
   // GET ONE
   @Get(':userId/:id')
-  async getOne(@Param() params) {
+  async getOne(@Param() params): Promise<Links | null> {
     return await this.linksService.getOne(params.id, params.userId);
   }
 
@@ -51,12 +51,7 @@ export class AdminLinksController {
       storage: adminStorageUpload,
     }),
   )
-  async create(
-    @UploadedFiles() file,
-    @Body() body,
-    @Request() req,
-  ): Promise<Links> {
-    console.log(body);
+  async create(@UploadedFiles() file, @Body() body): Promise<Links> {
     const linkId = getIdFromPath(file);
     const fileUrl = file.pop().path;
 
@@ -65,7 +60,7 @@ export class AdminLinksController {
       name: body.name,
       url: body.origUrl,
       fileUrl: fileUrl,
-      userId: req.user.id,
+      userId: body.userId,
     };
 
     return await this.linksService.create(linkObj);
@@ -73,13 +68,13 @@ export class AdminLinksController {
 
   // PUT UPDATE
   @Put()
-  async update(@Body() body: UpdateLinkDto) {
+  async update(@Body() body: UpdateLinkDto): Promise<Links> {
     return await this.linksService.update(body.id, body.userId, body.isActive);
   }
 
   // DELETE
   @Delete(':id')
-  async remove(@Body() body) {
+  async remove(@Body() body): Promise<any> {
     return await this.linksService.remove(body.id, body.userId);
   }
 }
