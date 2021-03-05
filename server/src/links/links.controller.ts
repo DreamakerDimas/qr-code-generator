@@ -54,7 +54,7 @@ export class LinksController {
   )
   async create(
     @UploadedFiles() file,
-    @Body() body,
+    @Body() body: CreateLinkDto,
     @Request() req,
   ): Promise<Links> {
     const linkId = getIdFromPath(file);
@@ -63,7 +63,7 @@ export class LinksController {
     const linkObj: CreateLinkDto = {
       id: linkId,
       name: body.name,
-      url: body.origUrl,
+      url: body.url,
       fileUrl: fileUrl,
       userId: req.user.id,
     };
@@ -79,8 +79,8 @@ export class LinksController {
 
   // DELETE MY
   @Delete(':id')
-  async remove(@Param() params, @Request() req) {
+  async remove(@Param('id') id: string, @Request() req) {
     // add remove api
-    return await this.linksService.remove(params.id, req.user.id);
+    return await this.linksService.remove(id, req.user.id);
   }
 }

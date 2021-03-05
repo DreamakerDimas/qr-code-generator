@@ -34,14 +34,17 @@ export class AdminLinksController {
   // Role: ADMIN
   // GET ALL
   @Get(':userId')
-  async getAll(@Param() params): Promise<Links[] | []> {
-    return await this.linksService.getAll(params.userId);
+  async getAll(@Param('userId') userId: string): Promise<Links[] | []> {
+    return await this.linksService.getAll(userId);
   }
 
   // GET ONE
   @Get(':userId/:id')
-  async getOne(@Param() params): Promise<Links | null> {
-    return await this.linksService.getOne(params.id, params.userId);
+  async getOne(
+    @Param('userId') userId: string,
+    @Param('id') id: string,
+  ): Promise<Links | null> {
+    return await this.linksService.getOne(id, userId);
   }
 
   // POST CREATE
@@ -73,7 +76,7 @@ export class AdminLinksController {
   }
 
   // DELETE
-  @Delete(':id')
+  @Delete()
   async remove(@Body() body): Promise<any> {
     return await this.linksService.remove(body.id, body.userId);
   }
