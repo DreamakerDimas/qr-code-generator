@@ -1,14 +1,17 @@
+import { Links } from 'src/links/links.entity';
 import {
   PrimaryGeneratedColumn,
   Column,
   UpdateDateColumn,
   CreateDateColumn,
   Entity,
+  OneToMany,
 } from 'typeorm';
 import { Role } from '../constants';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
+  @OneToMany((type) => Links, (links) => links.userId)
   id: string;
 
   @Column()

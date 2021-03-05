@@ -7,6 +7,7 @@ import { User } from './users/users.entity';
 import { AuthModule } from './auth/auth.module';
 import { ProfileModule } from './profile/profile.module';
 import { LinksModule } from './links/links.module';
+import { Links } from './links/links.entity';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { LinksModule } from './links/links.module';
       username: 'postgres',
       password: 'postgres',
       database: 'qrgen',
-      entities: [User],
+      entities: [User, Links],
       synchronize: true,
     }),
     UserModule,

@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import Header from './components/Header/Header';
 import './App.css';
+import QRCode from './pages/QRCode/QRCode';
 
 class App extends Component {
   render() {
     return (
       <>
         <Header />
+        <QRCode />
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores
         officiis deleniti aut ipsum aperiam vitae dolore, optio numquam delectus
         cumque! Eum nostrum, provident possimus voluptatem adipisci aut eveniet
