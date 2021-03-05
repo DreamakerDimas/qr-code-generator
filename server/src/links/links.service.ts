@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/users.entity';
 import { Repository } from 'typeorm';
+import { CreateLinkDto } from './dto/create-link.dto';
 import { Links } from './links.entity';
 
 @Injectable()
@@ -11,15 +12,15 @@ export class LinksService {
     readonly linksRepository: Repository<Links>,
   ) {}
 
-  async getAll(userId): Promise<Links[] | []> {
+  async getAll(userId: string): Promise<Links[] | []> {
     return await this.linksRepository.find({ userId });
   }
 
-  async getOne(id, userId): Promise<Links | null> {
+  async getOne(id: string, userId: string): Promise<Links | null> {
     return await this.linksRepository.findOne({ id, userId });
   }
 
-  async create(link): Promise<Links> {
+  async create(link: CreateLinkDto): Promise<Links> {
     return await this.linksRepository.save(link);
   }
 
