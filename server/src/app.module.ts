@@ -8,9 +8,11 @@ import { AuthModule } from './auth/auth.module';
 import { ProfileModule } from './profile/profile.module';
 import { LinksModule } from './links/links.module';
 import { Links } from './links/links.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -19,7 +21,7 @@ import { Links } from './links/links.entity';
       password: 'postgres',
       database: 'qrgen',
       entities: [User, Links],
-      synchronize: true,
+      synchronize: true, // change to migrations
     }),
     UserModule,
     AuthModule,

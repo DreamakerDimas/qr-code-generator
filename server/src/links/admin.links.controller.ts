@@ -20,10 +20,7 @@ import { CreateLinkDto } from './dto/create-link.dto';
 import { UpdateLinkDto } from './dto/update-link.dto';
 import { Links } from './links.entity';
 import { LinksService } from './links.service';
-import {
-  adminStorageUpload,
-  getIdFromPath,
-} from './storageMulter/storageMulter';
+import { getIdFromPath } from './storageMulter/storageMulter';
 
 @Roles(Role.ADMIN)
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -48,26 +45,21 @@ export class AdminLinksController {
   }
 
   // POST CREATE
-  @Post()
-  @UseInterceptors(
-    FilesInterceptor('file', null, {
-      storage: adminStorageUpload,
-    }),
-  )
-  async create(@UploadedFiles() file, @Body() body): Promise<Links> {
-    const linkId = getIdFromPath(file);
-    const fileUrl = file.pop().path;
+  // @Post()
+  // async create(@UploadedFiles() file, @Body() body): Promise<Links> {
+  //   const linkId = getIdFromPath(file);
+  //   const fileUrl = file.pop().path;
 
-    const linkObj: CreateLinkDto = {
-      id: linkId,
-      name: body.name,
-      url: body.origUrl,
-      fileUrl: fileUrl,
-      userId: body.userId,
-    };
+  //   const linkObj: CreateLinkDto = {
+  //     id: linkId,
+  //     name: body.name,
+  //     url: body.origUrl,
+  //     fileUrl: fileUrl,
+  //     userId: body.userId,
+  //   };
 
-    return await this.linksService.create(linkObj);
-  }
+  //   return await this.linksService.create(linkObj);
+  // }
 
   // PUT UPDATE
   @Put()

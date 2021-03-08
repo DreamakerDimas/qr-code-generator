@@ -12,7 +12,6 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { LinksService } from './links.service';
-import { FilesInterceptor } from '@nestjs/platform-express';
 
 import { Role } from '../constants';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -21,10 +20,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { Links } from './links.entity';
 import { CreateLinkDto } from './dto/create-link.dto';
 import { UpdateLinkDto } from './dto/update-link.dto';
-import {
-  getIdFromPath,
-  userStorageUpload,
-} from './storageMulter/storageMulter';
+import { v4 } from 'uuid';
 
 @Roles(Role.ADMIN) // !!! change on USER
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -45,30 +41,25 @@ export class LinksController {
     return await this.linksService.getOne(id, req.user.id);
   }
 
-  // POST CREATE MY
+  //POST CREATE MY
   @Post()
-  @UseInterceptors(
-    FilesInterceptor('file', null, {
-      storage: userStorageUpload,
-    }),
-  )
-  async create(
-    @UploadedFiles() file,
-    @Body() body: CreateLinkDto,
-    @Request() req,
-  ): Promise<Links> {
-    const linkId = getIdFromPath(file);
-    const fileUrl = file.pop().path;
+  async create(@Body() body: CreateLinkDto, @Request() req): Promise<Links> {
+    const id = v4();
+    const filename = `${req.user.id}/${id}.png`;
+    const fileUrl = `https://storage.cloud.google.com/${process.env.GCLOUD_STORAGE_BUCKET}/${filename}`;
+    const innerUrl = `${req.hostname}/redirect/${id}`;
 
     const linkObj: CreateLinkDto = {
-      id: linkId,
+      id,
       name: body.name,
-      url: body.url,
-      fileUrl: fileUrl,
+      filename,
+      fileUrl,
+      innerUrl,
+      outerUrl: body.outerUrl,
       userId: req.user.id,
     };
 
-    return await this.linksService.create(linkObj);
+    return await this.linksService.create(linkObj, filename);
   }
 
   // PUT UPDATE STATUS OF MY

@@ -4,6 +4,8 @@ import { User } from 'src/users/users.entity';
 import { Repository } from 'typeorm';
 import { CreateLinkDto } from './dto/create-link.dto';
 import { Links } from './links.entity';
+import { uploadFromBuffer, deleteFile } from './storageMulter/storageMulter';
+import { toBuffer } from 'qrcode';
 
 @Injectable()
 export class LinksService {
@@ -20,8 +22,22 @@ export class LinksService {
     return await this.linksRepository.findOne({ id, userId });
   }
 
-  async create(link: CreateLinkDto): Promise<Links> {
-    return await this.linksRepository.save(link);
+  async create(linkObj: CreateLinkDto, filename: string): Promise<Links> {
+    try {
+      const link = await this.linksRepository.create(linkObj);
+
+      // QR generation and uploading
+      toBuffer(link.innerUrl, (err, buffer) => {
+        if (err) throw err;
+        uploadFromBuffer(filename, buffer);
+      });
+
+      return this.linksRepository.save(link);
+    } catch (err) {
+      await this.linksRepository.delete(linkObj);
+      // delete file
+      // return err
+    }
   }
 
   async update(id, userId, isActive): Promise<Links> {
@@ -36,6 +52,8 @@ export class LinksService {
   }
 
   async remove(id, userId): Promise<any> {
+    const link = await this.linksRepository.findOne({ id, userId });
+    deleteFile(link.filename);
     return await this.linksRepository.delete({ id, userId });
   }
 }
