@@ -13,6 +13,9 @@ const {
   GET_USER_CODES_REQUEST,
   GET_USER_CODES_SUCCESS,
   GET_USER_CODES_ERROR,
+  CREATE_USER_CODE_REQUEST,
+  CREATE_USER_CODE_SUCCESS,
+  CREATE_USER_CODE_ERROR,
 } = ADMIN_ACTIONS;
 
 const initState = {
@@ -24,6 +27,7 @@ const initState = {
 
 export default function (state = initState, action) {
   switch (action.type) {
+    case CREATE_USER_CODE_REQUEST:
     case GET_USER_CODES_REQUEST:
     case DELETE_USER_REQUEST:
     case UPDATE_USER_REQUEST:
@@ -48,6 +52,7 @@ export default function (state = initState, action) {
         userData: null,
         userCodes: [],
       };
+    case CREATE_USER_CODE_SUCCESS:
     case GET_USER_CODES_SUCCESS:
       return {
         ...state,
@@ -55,6 +60,7 @@ export default function (state = initState, action) {
         error: null,
         userCodes: action.payload,
       };
+    case CREATE_USER_CODE_ERROR:
     case GET_USER_CODES_ERROR:
     case DELETE_USER_ERROR:
     case UPDATE_USER_ERROR:

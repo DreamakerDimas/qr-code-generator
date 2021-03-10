@@ -1,0 +1,34 @@
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { getUserCodesAction } from '../../actions/actionCreator';
+
+import QRCardsList from '../../components/QRCardsList/QRCardsList';
+import QRCreateForm from '../../components/QRCreateForm/QRCreateForm';
+import AdminQRCreateForm from '../QRCreateForm/AdminQRCreateForm';
+
+const UserCodes = (props) => {
+  const { getUserCodes, user } = props;
+  const { isFetching, error, userCodes, userData } = user;
+
+  useEffect(() => {
+    getUserCodes(userData.id);
+  }, []);
+
+  return (
+    <>
+      <AdminQRCreateForm userData={userData} />
+      {isFetching ? 'loading' : <QRCardsList codesArr={userCodes} />}
+    </>
+  );
+};
+
+const mapStateToProps = (state) => {
+  const { user } = state;
+  return { user };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  getUserCodes: (id) => dispatch(getUserCodesAction(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserCodes);

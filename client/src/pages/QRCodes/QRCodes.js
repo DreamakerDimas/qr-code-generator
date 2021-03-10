@@ -9,7 +9,6 @@ import QRCreateForm from '../../components/QRCreateForm/QRCreateForm';
 const QRCodes = (props) => {
   const { getCodes, qrCodes } = props;
   const { isFetching, error, codesArr } = qrCodes;
-  console.log(codesArr);
 
   useEffect(() => {
     getCodes();
@@ -18,7 +17,7 @@ const QRCodes = (props) => {
   return (
     <>
       <QRCreateForm />
-      <QRCardsList qrCodes={qrCodes} />
+      {isFetching ? 'loading' : <QRCardsList codesArr={codesArr} />}
     </>
   );
 };
@@ -33,5 +32,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QRCodes);
-
-// https://storage.googleapis.com/qr-code-generator-bucket/b590d8d1-4780-48af-bc9f-0290282a30e4/0ecd0755-13aa-4bae-adcd-873f9396bfb8.png

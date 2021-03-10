@@ -86,3 +86,9 @@ export const getUserCodesAction = (payload) => {
     payload,
   };
 };
+export const createUserCodeAction = (payload) => {
+  return {
+    type: ADMIN_ACTIONS.CREATE_USER_CODE,
+    payload,
+  };
+};

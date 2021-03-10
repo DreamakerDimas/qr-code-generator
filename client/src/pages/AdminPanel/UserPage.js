@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useParams, withRouter } from 'react-router';
 import { deleteUserAction, getUserAction } from '../../actions/actionCreator';
+import UserCodes from '../../components/User/UserCodes';
 import UserEdit from '../../components/User/UserEdit';
 import UserInfo from '../../components/User/UserInfo';
 
@@ -37,7 +38,7 @@ const UserPage = (props) => {
       <Button onClick={showEditHandler}>Edit</Button>
       <Button onClick={deleteHandler}>Delete</Button>
       {showEdit && <UserEdit user={userData} />}
-      {showCodes && <div>Codes</div>}
+      {showCodes && <UserCodes />}
     </div>
   );
 };

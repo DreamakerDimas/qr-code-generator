@@ -1,17 +1,14 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { getMyCodes } from '../../actions/actionCreator';
-
+import React from 'react';
 import QRCard from '../../components/QRCard/QRCard';
 
 const QRCardsList = (props) => {
-  const { isFetching, error, codesArr } = props.qrCodes;
+  const { codesArr } = props;
 
-  const renderCodesList = (codes) => {
-    return codes.map((code) => <QRCard key={code.id} code={code} />);
+  const renderCodesList = () => {
+    return codesArr.map((code) => <QRCard key={code.id} code={code} />);
   };
 
-  return <div>{isFetching ? 'loading' : renderCodesList(codesArr)}</div>;
+  return <div>{renderCodesList()}</div>;
 };
 
 export default QRCardsList;

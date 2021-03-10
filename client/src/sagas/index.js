@@ -17,6 +17,7 @@ import {
   getUserSaga,
   deleteUserSaga,
   getUserCodesSaga,
+  createUserCodeSaga,
 } from './usersSagas';
 
 function* rootSaga() {
@@ -35,6 +36,7 @@ function* rootSaga() {
   yield takeLatest(ADMIN_ACTIONS.DELETE_USER, deleteUserSaga);
   // ADMIN user_codes
   yield takeLatest(ADMIN_ACTIONS.GET_USER_CODES, getUserCodesSaga);
+  yield takeLatest(ADMIN_ACTIONS.CREATE_USER_CODE, createUserCodeSaga);
 }
 
 export default rootSaga;

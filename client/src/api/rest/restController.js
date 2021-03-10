@@ -18,4 +18,5 @@ export const createUser = (data) => http.post('users', data);
 export const updateUser = (data) => http.put(`users/${data.id}`, data.body);
 export const deleteUser = (data) => http.delete(`users/${data}`);
 // admin users_codes
-export const getUserCodes = (data) => http.get(`links/admin.${data}`);
+export const getUserCodes = (data) => http.get(`links/admin/${data}`);
+export const createUserCode = (data) => http.post('links/admin', data);

@@ -21,6 +21,9 @@ const {
   GET_USER_CODES_REQUEST,
   GET_USER_CODES_SUCCESS,
   GET_USER_CODES_ERROR,
+  CREATE_USER_CODE_REQUEST,
+  CREATE_USER_CODE_SUCCESS,
+  CREATE_USER_CODE_ERROR,
 } = ADMIN_ACTIONS;
 
 const getAllUsersLocation = (pathname, id) => {
@@ -88,13 +91,28 @@ export function* deleteUserSaga(action) {
   }
 }
 
+// user codes
 export function* getUserCodesSaga(action) {
   yield put({ type: GET_USER_CODES_REQUEST });
   try {
     const { data } = yield restController.getUserCodes(action.payload);
 
-    yield put({ type: GET_USERS_SUCCESS, payload: data });
+    yield put({ type: GET_USER_CODES_SUCCESS, payload: data });
   } catch (err) {
-    yield put({ type: GET_USERS_ERROR, error: err.response });
+    yield put({ type: GET_USER_CODES_ERROR, error: err.response });
+  }
+}
+
+export function* createUserCodeSaga(action) {
+  yield put({ type: CREATE_USER_CODE_REQUEST });
+  try {
+    const { data } = yield restController.createUserCode(action.payload);
+
+    let { userCodes } = yield select((state) => state.user);
+    userCodes.unshift(data);
+
+    yield put({ type: CREATE_USER_CODE_SUCCESS, payload: userCodes });
+  } catch (err) {
+    yield put({ type: CREATE_USER_CODE_ERROR, error: err.response });
   }
 }
