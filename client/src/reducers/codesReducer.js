@@ -17,7 +17,6 @@ const initState = {
 
 export default function (state = initState, action) {
   switch (action.type) {
-    // GET PART
     case GET_MY_CODES_REQUEST:
     case CREATE_QR_CODE_REQUEST:
       return {

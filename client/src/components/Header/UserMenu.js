@@ -2,9 +2,10 @@ import React from 'react';
 import { Button, Menu, MenuItem } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { ACCESS_TOKEN } from '../../constants';
+import { ACCESS_TOKEN, ADMIN_PANEL_STATES } from '../../constants';
 
 const UserMenu = (props) => {
+  const { ALL_USERS } = ADMIN_PANEL_STATES;
   const { user, logout, history } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -17,7 +18,7 @@ const UserMenu = (props) => {
   };
 
   const handleAdmin = () => {
-    history.push('/admin_panel');
+    history.push(`/admin_panel/${ALL_USERS}`);
     handleClose();
   };
 

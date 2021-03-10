@@ -7,9 +7,8 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 
-const ProfileDisplay = (props) => {
+const UserInfo = (props) => {
   const { user } = props;
   const [registeredAt, setRegisteredAt] = useState(null);
 
@@ -24,13 +23,9 @@ const ProfileDisplay = (props) => {
     <>
       {user && (
         <Card>
-          <CardHeader title="Your Profile Settings" subheader={registeredAt} />
+          <CardHeader title={user.name} />
           <CardContent>
             <List>
-              <ListItem>
-                <ListItemText primary="Name:" />
-                <ListItemText primary={user.name} />
-              </ListItem>
               <ListItem>
                 <ListItemText primary="Email:" />
                 <ListItemText primary={user.email} />
@@ -38,6 +33,10 @@ const ProfileDisplay = (props) => {
               <ListItem>
                 <ListItemText primary="Role:" />
                 <ListItemText primary={user.role} />
+              </ListItem>
+              <ListItem>
+                <ListItemText primary="Registration date:" />
+                <ListItemText primary={registeredAt} />
               </ListItem>
             </List>
           </CardContent>
@@ -47,4 +46,4 @@ const ProfileDisplay = (props) => {
   );
 };
 
-export default ProfileDisplay;
+export default UserInfo;
