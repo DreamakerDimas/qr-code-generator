@@ -1,17 +1,28 @@
+import { Card, CardContent, CardMedia, Typography } from '@material-ui/core';
 import React from 'react';
 
-const QRCard = () => {
+const QRCard = (props) => {
+  const { fileUrl, name, outerUrl, innerUrl, isActive } = props.code;
+
   return (
-    <div className="cardContainer">
-      <div className="imgContainer">
-        <img alt="QRCode" />
-      </div>
-      <div className="dataContainer">
-        <h3>Name</h3>
-        <p>URL</p>
-        <p>isActive</p>
-      </div>
-    </div>
+    <Card>
+      <CardContent>
+        <img src={fileUrl} alt="QRCode" />
+      </CardContent>
+      <CardContent>
+        <Typography component="h5" variant="h5">
+          Name: {name}
+        </Typography>
+        <Typography variant="subtitle1" color="textSecondary">
+          Destination URL: {outerUrl}
+        </Typography>
+        <Typography variant="subtitle1" color="textSecondary">
+          Encoded URL: {innerUrl}
+        </Typography>
+        {isActive ? <div>ACTIVE</div> : <div>DISABLE</div>}
+        <p>AND SET STATUS HERE</p>
+      </CardContent>
+    </Card>
   );
 };
 

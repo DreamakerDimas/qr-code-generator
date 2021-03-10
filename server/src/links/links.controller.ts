@@ -7,12 +7,9 @@ import {
   Post,
   Put,
   Request,
-  UploadedFiles,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import { LinksService } from './links.service';
-
 import { Role } from '../constants';
 import { Roles } from 'src/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
@@ -20,7 +17,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { Links } from './links.entity';
 import { CreateLinkDto } from './dto/create-link.dto';
 import { UpdateLinkDto } from './dto/update-link.dto';
-import { v4 } from 'uuid';
+import * as uuid from 'uuid';
 
 @Roles(Role.ADMIN) // !!! change on USER
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -44,7 +41,7 @@ export class LinksController {
   //POST CREATE MY
   @Post()
   async create(@Body() body: CreateLinkDto, @Request() req): Promise<Links> {
-    const id = v4();
+    const id = uuid.v4();
     const filename = `${req.user.id}/${id}.png`;
     const fileUrl = `https://storage.cloud.google.com/${process.env.GCLOUD_STORAGE_BUCKET}/${filename}`;
     const innerUrl = `${req.hostname}/redirect/${id}`;
@@ -59,7 +56,7 @@ export class LinksController {
       userId: req.user.id,
     };
 
-    return await this.linksService.create(linkObj, filename);
+    return await this.linksService.create(linkObj);
   }
 
   // PUT UPDATE STATUS OF MY
@@ -71,7 +68,6 @@ export class LinksController {
   // DELETE MY
   @Delete(':id')
   async remove(@Param('id') id: string, @Request() req) {
-    // add remove api
     return await this.linksService.remove(id, req.user.id);
   }
 }

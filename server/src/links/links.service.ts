@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/users/users.entity';
 import { Repository } from 'typeorm';
 import { CreateLinkDto } from './dto/create-link.dto';
 import { Links } from './links.entity';
-import { uploadFromBuffer, deleteFile } from './storageMulter/storageMulter';
+import { uploadFromBuffer, deleteFile } from '../gstorage';
 import { toBuffer } from 'qrcode';
 
 @Injectable()
@@ -22,11 +21,12 @@ export class LinksService {
     return await this.linksRepository.findOne({ id, userId });
   }
 
-  async create(linkObj: CreateLinkDto, filename: string): Promise<Links> {
+  async create(linkObj: CreateLinkDto): Promise<Links> {
     try {
       const link = await this.linksRepository.create(linkObj);
+      const { filename } = link;
 
-      // QR generation and uploading
+      // QR generation to buffer and uploading
       toBuffer(link.innerUrl, (err, buffer) => {
         if (err) throw err;
         uploadFromBuffer(filename, buffer);

@@ -5,9 +5,10 @@ import * as restController from '../api/rest/restController';
 export function* loginSaga(action) {
   yield put({ type: AUTH_ACTION.REQUEST });
   try {
-    // yield restController.loginRequest(action.payload)
+    yield restController.loginRequest(action.payload);
     yield put({ type: AUTH_ACTION.SUCCESS });
+    action.history.push('/');
   } catch (err) {
-    yield pyt({ type: AUTH_ACTION.ERROR, error: err.response }); // !!!
+    yield put({ type: AUTH_ACTION.ERROR, error: err.response }); // !!!
   }
 }

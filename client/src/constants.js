@@ -1,7 +1,5 @@
 const serverIP = 'localhost';
-const serverPort = 3000;
+const serverPort = 4000;
 
-export default {
-  BASE_URL: `http://${serverIP}/${serverPort}/`,
-  ACCESS_TOKEN: 'accessToken',
-};
+export const BASE_URL = `http://${serverIP}:${serverPort}/`;
+export const ACCESS_TOKEN = 'accessToken';

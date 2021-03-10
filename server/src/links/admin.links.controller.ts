@@ -7,11 +7,8 @@ import {
   Post,
   Put,
   Request,
-  UploadedFiles,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
 import { Role } from 'src/constants';
 import { Roles } from 'src/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
@@ -20,7 +17,7 @@ import { CreateLinkDto } from './dto/create-link.dto';
 import { UpdateLinkDto } from './dto/update-link.dto';
 import { Links } from './links.entity';
 import { LinksService } from './links.service';
-import { getIdFromPath } from './storageMulter/storageMulter';
+import * as uuid from 'uuid';
 
 @Roles(Role.ADMIN)
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -45,21 +42,25 @@ export class AdminLinksController {
   }
 
   // POST CREATE
-  // @Post()
-  // async create(@UploadedFiles() file, @Body() body): Promise<Links> {
-  //   const linkId = getIdFromPath(file);
-  //   const fileUrl = file.pop().path;
+  @Post()
+  async create(@Body() body, @Request() req): Promise<Links> {
+    const id = uuid.v4();
+    const filename = `${body.userId}/${id}.png`;
+    const fileUrl = `https://storage.cloud.google.com/${process.env.GCLOUD_STORAGE_BUCKET}/${filename}`;
+    const innerUrl = `${req.hostname}/redirect/${id}`;
 
-  //   const linkObj: CreateLinkDto = {
-  //     id: linkId,
-  //     name: body.name,
-  //     url: body.origUrl,
-  //     fileUrl: fileUrl,
-  //     userId: body.userId,
-  //   };
+    const linkObj: CreateLinkDto = {
+      id,
+      name: body.name,
+      filename,
+      fileUrl,
+      innerUrl,
+      outerUrl: body.outerUrl,
+      userId: body.userId,
+    };
 
-  //   return await this.linksService.create(linkObj);
-  // }
+    return await this.linksService.create(linkObj);
+  }
 
   // PUT UPDATE
   @Put()

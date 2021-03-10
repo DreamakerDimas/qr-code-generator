@@ -19,8 +19,8 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    const token = response.accessToken;
-    if (token) window.localStorage.setItem(ACCESS_TOKEN, token);
+    const token = response.data.access_token;
+    if (token) window.localStorage.setItem(ACCESS_TOKEN, 'Bearer ' + token);
 
     return response;
   },
