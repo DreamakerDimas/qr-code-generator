@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import ProfileDisplay from '../../components/Profile/ProfileDisplay';
 import ProfileEdit from '../../components/Profile/ProfileEdit';
+import styles from './Profile.module.sass';
 
 const Profile = (props) => {
   const [user, setUser] = useState(null);
@@ -17,19 +18,23 @@ const Profile = (props) => {
   };
 
   return (
-    <>
+    <div className={styles.profileContainer}>
       {isEdit ? (
         <>
-          <Button onClick={changePageHandler}>Back</Button>
           <ProfileEdit user={user} />
+          <Button className={styles.backBut} onClick={changePageHandler}>
+            Back
+          </Button>
         </>
       ) : (
         <>
-          <Button onClick={changePageHandler}>Edit</Button>
           <ProfileDisplay user={user} />
+          <Button className={styles.editBut} onClick={changePageHandler}>
+            Edit
+          </Button>
         </>
       )}
-    </>
+    </div>
   );
 };
 

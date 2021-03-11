@@ -7,7 +7,7 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import styles from './ProfileDisplay.module.sass';
 
 const ProfileDisplay = (props) => {
   const { user } = props;
@@ -23,21 +23,28 @@ const ProfileDisplay = (props) => {
   return (
     <>
       {user && (
-        <Card>
-          <CardHeader title="Your Profile Settings" subheader={registeredAt} />
-          <CardContent>
-            <List>
-              <ListItem>
-                <ListItemText primary="Name:" />
-                <ListItemText primary={user.name} />
+        <Card className={styles.profileCard}>
+          <CardHeader
+            className={styles.cardHeader}
+            title="Your Profile"
+            subheader={registeredAt}
+          />
+          <CardContent className={styles.cardContent}>
+            <List className={styles.listContainer}>
+              <ListItem className={styles.listItem}>
+                <ListItemText className={styles.textItem} primary="Name:" />
+                <ListItemText className={styles.textItem} primary={user.name} />
               </ListItem>
-              <ListItem>
-                <ListItemText primary="Email:" />
-                <ListItemText primary={user.email} />
+              <ListItem className={styles.listItem}>
+                <ListItemText className={styles.textItem} primary="Email:" />
+                <ListItemText
+                  className={styles.textItem}
+                  primary={user.email}
+                />
               </ListItem>
-              <ListItem>
-                <ListItemText primary="Role:" />
-                <ListItemText primary={user.role} />
+              <ListItem className={styles.listItem}>
+                <ListItemText className={styles.textItem} primary="Role:" />
+                <ListItemText className={styles.textItem} primary={user.role} />
               </ListItem>
             </List>
           </CardContent>

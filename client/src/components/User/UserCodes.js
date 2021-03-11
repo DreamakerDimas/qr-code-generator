@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { getUserCodesAction } from '../../actions/actionCreator';
 
 import QRCardsList from '../../components/QRCardsList/QRCardsList';
-import QRCreateForm from '../../components/QRCreateForm/QRCreateForm';
 import AdminQRCreateForm from '../QRCreateForm/AdminQRCreateForm';
 
 const UserCodes = (props) => {

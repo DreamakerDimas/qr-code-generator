@@ -1,8 +1,9 @@
-import { InputLabel } from '@material-ui/core';
+import { Button, InputLabel, StylesProvider } from '@material-ui/core';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { updateProfileAction } from '../../actions/actionCreator';
+import styles from './ProfileEdit.module.sass';
 
 const ProfileEdit = (props) => {
   const { user, handleSubmit, submitting, updateProfile } = props;
@@ -12,30 +13,36 @@ const ProfileEdit = (props) => {
   };
 
   return (
-    <div>
+    <div className={styles.formContainer}>
       <form onSubmit={handleSubmit(submitHandler)}>
-        <InputLabel htmlFor="name">
-          Currently account name is: "{user.name}"
-        </InputLabel>
-        <Field
-          name="name"
-          component="input"
-          type="text"
-          placeholder="Your Name"
-        />
-        <InputLabel htmlFor="email">
-          Currently your email is: "{user.email}"
-        </InputLabel>
-        <Field
-          name="email"
-          component="input"
-          type="text"
-          placeholder="Email Address"
-        />
+        <div>
+          <InputLabel htmlFor="name">
+            Currently account name is: "{user.name}"
+          </InputLabel>
+          <Field
+            name="name"
+            component="input"
+            type="text"
+            placeholder="Your Name"
+            className={styles.field}
+          />
+        </div>
+        <div>
+          <InputLabel htmlFor="email">
+            Currently your email is: "{user.email}"
+          </InputLabel>
+          <Field
+            name="email"
+            component="input"
+            type="text"
+            placeholder="Email Address"
+            className={styles.field}
+          />
+        </div>
         {/* error */}
-        <button type="submit" disabled={submitting}>
+        <Button className={styles.submit} type="submit" disabled={submitting}>
           EDIT
-        </button>
+        </Button>
       </form>
     </div>
   );

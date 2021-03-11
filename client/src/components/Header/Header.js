@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { AppBar, Button, Toolbar, Grid } from '@material-ui/core';
 import Logo from '../Logo/Logo';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getProfileAction } from '../../actions/actionCreator';
 import UserMenu from './UserMenu';
 import { logoutAction } from '../../actions/actionCreator';
+import { withRouter } from 'react-router';
+import styles from './Header.module.sass';
 
 const Header = (props) => {
-  const { profile, auth, getProfile, logout } = props;
+  const { profile, auth, getProfile, logout, history } = props;
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -19,13 +20,19 @@ const Header = (props) => {
     setUser(profile.data);
   }, [profile]);
 
+  const loginHandler = () => {
+    history.push('/login');
+  };
+
   const renderButtons = () => {
     return (
       <>
         {user ? (
           <UserMenu user={user} logout={logout} />
         ) : (
-          <Link to="/login">LOGIN</Link>
+          <Button className={styles.loginBut} onClick={loginHandler}>
+            LOGIN
+          </Button>
         )}
       </>
     );
@@ -61,4 +68,4 @@ const mapDispatchToProps = (dispatch) => ({
   logout: () => dispatch(logoutAction()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

@@ -45,6 +45,7 @@ export default function (state = initState, action) {
         isFetching: true,
         error: null,
       };
+      break;
     case UPDATE_USER_SUCCESS:
     case GET_USER_SUCCESS:
       return {
@@ -53,6 +54,7 @@ export default function (state = initState, action) {
         error: null,
         userData: action.payload,
       };
+      break;
     case DELETE_USER_SUCCESS:
       return {
         isFetching: false,
@@ -60,6 +62,7 @@ export default function (state = initState, action) {
         userData: null,
         userCodes: [],
       };
+      break;
     case DELETE_USER_CODE_SUCCESS:
     case UPDATE_USER_CODE_SUCCESS:
     case CREATE_USER_CODE_SUCCESS:
@@ -70,6 +73,7 @@ export default function (state = initState, action) {
         error: null,
         userCodes: action.payload,
       };
+      break;
     case DELETE_USER_CODE_ERROR:
     case UPDATE_USER_CODE_ERROR:
     case CREATE_USER_CODE_ERROR:
@@ -82,6 +86,7 @@ export default function (state = initState, action) {
         isFetching: false,
         error: action.error,
       };
+      break;
     default:
       return state;
   }

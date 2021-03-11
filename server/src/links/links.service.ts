@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateLinkDto } from './dto/create-link.dto';
 import { Links } from './links.entity';
-import { uploadFromBuffer, deleteFile } from '../gstorage';
+import { uploadFromBuffer, deleteFile, downloadFile } from '../gstorage';
 import { toBuffer } from 'qrcode';
 
 @Injectable()
@@ -13,8 +13,10 @@ export class LinksService {
     readonly linksRepository: Repository<Links>,
   ) {}
 
-  async getAll(userId: string): Promise<Links[] | []> {
-    return await this.linksRepository.find({ userId });
+  async getAll(userId: string): Promise<any> {
+    const linksArr = await this.linksRepository.find({ userId });
+
+    return linksArr;
   }
 
   async getOne(id: string, userId: string): Promise<Links | null> {

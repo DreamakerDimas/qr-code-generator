@@ -3,6 +3,7 @@ import { Button, Menu, MenuItem } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { ACCESS_TOKEN, ADMIN_PANEL_STATES } from '../../constants';
+import styles from './UserMenu.module.sass';
 
 const UserMenu = (props) => {
   const { ALL_USERS } = ADMIN_PANEL_STATES;
@@ -44,6 +45,7 @@ const UserMenu = (props) => {
         aria-controls="simple-menu"
         aria-haspopup="true"
         onClick={handleClick}
+        className={styles.menuBut}
       >
         {user.name} <MoreVertIcon />
       </Button>

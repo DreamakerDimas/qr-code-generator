@@ -102,6 +102,7 @@ export function* getUserCodesSaga(action) {
   yield put({ type: GET_USER_CODES_REQUEST });
   try {
     const { data } = yield restController.getUserCodes(action.payload);
+    console.log(data);
 
     yield put({ type: GET_USER_CODES_SUCCESS, payload: data });
   } catch (err) {
@@ -114,10 +115,10 @@ export function* createUserCodeSaga(action) {
   try {
     const { data } = yield restController.createUserCode(action.payload);
 
-    let { userCodes } = yield select((state) => state.user);
-    userCodes.unshift(data);
+    const { userCodes } = yield select((state) => state.user);
+    const updatedArr = [data, ...userCodes];
 
-    yield put({ type: CREATE_USER_CODE_SUCCESS, payload: userCodes });
+    yield put({ type: CREATE_USER_CODE_SUCCESS, payload: updatedArr });
   } catch (err) {
     yield put({ type: CREATE_USER_CODE_ERROR, error: err.response });
   }

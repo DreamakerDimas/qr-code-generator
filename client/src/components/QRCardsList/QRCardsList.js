@@ -8,6 +8,7 @@ import {
   updateMyCode,
   updateUserCodeAction,
 } from '../../actions/actionCreator';
+import styles from './QRCardsList.module.sass';
 
 const QRCardsList = (props) => {
   const {
@@ -38,17 +39,27 @@ const QRCardsList = (props) => {
 
   const renderCodesList = () => {
     return codesArr.map((code) => (
-      <div key={code.id}>
+      <div className={styles.cardItem} key={code.id}>
         <QRCard code={code} />
-        <Button onClick={() => updateHandler(code.id, code.isActive)}>
+
+        <Button
+          className={styles.statusBut}
+          onClick={() => updateHandler(code.id, code.isActive)}
+        >
           CHANGE STATUS
         </Button>
-        <Button onClick={() => deleteHandler(code.id)}>DELETE</Button>
+
+        <Button
+          className={styles.deleteBut}
+          onClick={() => deleteHandler(code.id)}
+        >
+          DELETE
+        </Button>
       </div>
     ));
   };
 
-  return <div>{renderCodesList()}</div>;
+  return <div className={styles.cardsContainer}>{renderCodesList()}</div>;
 };
 
 const mapDispatchToProps = (dispatch) => ({

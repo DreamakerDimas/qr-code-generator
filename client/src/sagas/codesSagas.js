@@ -33,10 +33,10 @@ export function* createQRCodeSaga(action) {
   try {
     const { data } = yield restController.createQRCode(action.payload);
 
-    let { codesArr } = yield select((state) => state.qrCodes);
-    codesArr.unshift(data);
+    const { codesArr } = yield select((state) => state.qrCodes);
+    const updatedArr = [data, ...codesArr];
 
-    yield put({ type: CREATE_QR_CODE_SUCCESS, payload: codesArr });
+    yield put({ type: CREATE_QR_CODE_SUCCESS, payload: updatedArr });
   } catch (err) {
     yield put({ type: CREATE_QR_CODE_ERROR, error: err.response });
   }
