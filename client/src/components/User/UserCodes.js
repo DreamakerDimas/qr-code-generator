@@ -17,7 +17,12 @@ const UserCodes = (props) => {
   return (
     <>
       <AdminQRCreateForm userData={userData} />
-      {isFetching ? 'loading' : <QRCardsList codesArr={userCodes} />}
+
+      <QRCardsList
+        codesArr={userCodes}
+        userId={userData.id}
+        isAdminPanel={true}
+      />
     </>
   );
 };

@@ -19,9 +19,9 @@ import { CreateLinkDto } from './dto/create-link.dto';
 import { UpdateLinkDto } from './dto/update-link.dto';
 import * as uuid from 'uuid';
 
-@Roles(Role.ADMIN) // !!! change on USER
+@Roles(Role.USER, Role.ADMIN) // !!! change on USER
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Controller('links')
+@Controller('links/user/')
 export class LinksController {
   constructor(private linksService: LinksService) {}
 

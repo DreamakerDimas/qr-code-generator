@@ -9,6 +9,12 @@ const {
   CREATE_QR_CODE_REQUEST,
   CREATE_QR_CODE_SUCCESS,
   CREATE_QR_CODE_ERROR,
+  UPDATE_MY_CODE_REQUEST,
+  UPDATE_MY_CODE_SUCCESS,
+  UPDATE_MY_CODE_ERROR,
+  DELETE_MY_CODE_REQUEST,
+  DELETE_MY_CODE_SUCCESS,
+  DELETE_MY_CODE_ERROR,
 } = CODES_ACTIONS;
 
 export function* getMyCodesSaga(action) {
@@ -33,5 +39,36 @@ export function* createQRCodeSaga(action) {
     yield put({ type: CREATE_QR_CODE_SUCCESS, payload: codesArr });
   } catch (err) {
     yield put({ type: CREATE_QR_CODE_ERROR, error: err.response });
+  }
+}
+
+export function* updateQRCodeSaga(action) {
+  yield put({ type: UPDATE_MY_CODE_REQUEST });
+  try {
+    const { data } = yield restController.updateMyCode(action.payload);
+
+    const { codesArr } = yield select((state) => state.qrCodes);
+    const updatedArr = codesArr.map((code) => {
+      if (code.id === data.id) return data;
+      return code;
+    });
+
+    yield put({ type: UPDATE_MY_CODE_SUCCESS, payload: updatedArr });
+  } catch (err) {
+    yield put({ type: UPDATE_MY_CODE_ERROR, error: err.response });
+  }
+}
+
+export function* deleteQRCodeSaga(action) {
+  yield put({ type: DELETE_MY_CODE_REQUEST });
+  try {
+    yield restController.deleteMyCode(action.payload);
+
+    const { codesArr } = yield select((state) => state.qrCodes);
+    const updatedArr = codesArr.filter((code) => code.id !== action.payload);
+
+    yield put({ type: DELETE_MY_CODE_SUCCESS, payload: updatedArr });
+  } catch (err) {
+    yield put({ type: DELETE_MY_CODE_ERROR, error: err.response });
   }
 }

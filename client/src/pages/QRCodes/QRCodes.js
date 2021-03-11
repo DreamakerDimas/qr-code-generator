@@ -17,7 +17,8 @@ const QRCodes = (props) => {
   return (
     <>
       <QRCreateForm />
-      {isFetching ? 'loading' : <QRCardsList codesArr={codesArr} />}
+
+      <QRCardsList codesArr={codesArr} />
     </>
   );
 };

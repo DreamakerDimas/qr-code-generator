@@ -69,8 +69,11 @@ export class AdminLinksController {
   }
 
   // DELETE
-  @Delete()
-  async remove(@Body() body): Promise<any> {
-    return await this.linksService.remove(body.id, body.userId);
+  @Delete(':userId/:id')
+  async remove(
+    @Param('userId') userId: string,
+    @Param('id') id: string,
+  ): Promise<any> {
+    return await this.linksService.remove(id, userId);
   }
 }

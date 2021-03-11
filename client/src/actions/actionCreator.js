@@ -45,6 +45,18 @@ export const createQRCode = (payload) => {
     payload,
   };
 };
+export const updateMyCode = (payload) => {
+  return {
+    type: CODES_ACTIONS.UPDATE_MY_CODE,
+    payload,
+  };
+};
+export const deleteMyCode = (payload) => {
+  return {
+    type: CODES_ACTIONS.DELETE_MY_CODE,
+    payload,
+  };
+};
 
 // ADMIN
 export const getUsersAction = () => {
@@ -89,6 +101,18 @@ export const getUserCodesAction = (payload) => {
 export const createUserCodeAction = (payload) => {
   return {
     type: ADMIN_ACTIONS.CREATE_USER_CODE,
+    payload,
+  };
+};
+export const updateUserCodeAction = (payload) => {
+  return {
+    type: ADMIN_ACTIONS.UPDATE_USER_CODE,
+    payload,
+  };
+};
+export const deleteUserCodeAction = (payload) => {
+  return {
+    type: ADMIN_ACTIONS.DELETE_USER_CODE,
     payload,
   };
 };

@@ -52,7 +52,8 @@ export class LinksService {
   }
 
   async remove(id, userId): Promise<any> {
-    const link = await this.linksRepository.findOne({ id, userId });
+    const link = await this.linksRepository.findOne({ id });
+
     deleteFile(link.filename);
     return await this.linksRepository.delete({ id, userId });
   }

@@ -16,6 +16,12 @@ const {
   CREATE_USER_CODE_REQUEST,
   CREATE_USER_CODE_SUCCESS,
   CREATE_USER_CODE_ERROR,
+  UPDATE_USER_CODE_REQUEST,
+  UPDATE_USER_CODE_SUCCESS,
+  UPDATE_USER_CODE_ERROR,
+  DELETE_USER_CODE_REQUEST,
+  DELETE_USER_CODE_SUCCESS,
+  DELETE_USER_CODE_ERROR,
 } = ADMIN_ACTIONS;
 
 const initState = {
@@ -27,6 +33,8 @@ const initState = {
 
 export default function (state = initState, action) {
   switch (action.type) {
+    case DELETE_USER_CODE_REQUEST:
+    case UPDATE_USER_CODE_REQUEST:
     case CREATE_USER_CODE_REQUEST:
     case GET_USER_CODES_REQUEST:
     case DELETE_USER_REQUEST:
@@ -40,10 +48,10 @@ export default function (state = initState, action) {
     case UPDATE_USER_SUCCESS:
     case GET_USER_SUCCESS:
       return {
+        ...state,
         isFetching: false,
         error: null,
         userData: action.payload,
-        userCodes: [],
       };
     case DELETE_USER_SUCCESS:
       return {
@@ -52,6 +60,8 @@ export default function (state = initState, action) {
         userData: null,
         userCodes: [],
       };
+    case DELETE_USER_CODE_SUCCESS:
+    case UPDATE_USER_CODE_SUCCESS:
     case CREATE_USER_CODE_SUCCESS:
     case GET_USER_CODES_SUCCESS:
       return {
@@ -60,6 +70,8 @@ export default function (state = initState, action) {
         error: null,
         userCodes: action.payload,
       };
+    case DELETE_USER_CODE_ERROR:
+    case UPDATE_USER_CODE_ERROR:
     case CREATE_USER_CODE_ERROR:
     case GET_USER_CODES_ERROR:
     case DELETE_USER_ERROR:

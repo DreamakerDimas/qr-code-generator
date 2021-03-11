@@ -9,7 +9,12 @@ import {
 //sagas import
 import { loginSaga } from './authSagas';
 import { getProfileSaga, updateProfileSaga } from './profileSagas';
-import { getMyCodesSaga, createQRCodeSaga } from './codesSagas';
+import {
+  getMyCodesSaga,
+  createQRCodeSaga,
+  updateQRCodeSaga,
+  deleteQRCodeSaga,
+} from './codesSagas';
 import {
   createUserSaga,
   getUsersSaga,
@@ -18,6 +23,8 @@ import {
   deleteUserSaga,
   getUserCodesSaga,
   createUserCodeSaga,
+  updateUserCodeSaga,
+  deleteUserCodeSaga,
 } from './usersSagas';
 
 function* rootSaga() {
@@ -28,6 +35,8 @@ function* rootSaga() {
   // MY QR CODES
   yield takeLatest(CODES_ACTIONS.GET_MY_CODES, getMyCodesSaga);
   yield takeLatest(CODES_ACTIONS.CREATE_QR_CODE, createQRCodeSaga);
+  yield takeLatest(CODES_ACTIONS.UPDATE_MY_CODE, updateQRCodeSaga);
+  yield takeLatest(CODES_ACTIONS.DELETE_MY_CODE, deleteQRCodeSaga);
   // ADMIN
   yield takeLatest(ADMIN_ACTIONS.GET_USERS, getUsersSaga);
   yield takeLatest(ADMIN_ACTIONS.CREATE_USER, createUserSaga);
@@ -37,6 +46,8 @@ function* rootSaga() {
   // ADMIN user_codes
   yield takeLatest(ADMIN_ACTIONS.GET_USER_CODES, getUserCodesSaga);
   yield takeLatest(ADMIN_ACTIONS.CREATE_USER_CODE, createUserCodeSaga);
+  yield takeLatest(ADMIN_ACTIONS.UPDATE_USER_CODE, updateUserCodeSaga);
+  yield takeLatest(ADMIN_ACTIONS.DELETE_USER_CODE, deleteUserCodeSaga);
 }
 
 export default rootSaga;

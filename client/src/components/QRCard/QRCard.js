@@ -19,8 +19,7 @@ const QRCard = (props) => {
         <Typography variant="subtitle1" color="textSecondary">
           Encoded URL: {innerUrl}
         </Typography>
-        {isActive ? <div>ACTIVE</div> : <div>DISABLE</div>}
-        <p>AND SET STATUS HERE</p>
+        {isActive ? <div>ACTIVE (GREEN)</div> : <div>DISABLE (RED)</div>}
       </CardContent>
     </Card>
   );
