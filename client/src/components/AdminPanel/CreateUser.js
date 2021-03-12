@@ -1,5 +1,5 @@
 import { Button } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { createUserAction } from '../../actions/actionCreator';
@@ -9,7 +9,14 @@ import styles from './CreateUser.module.sass';
 const { USER, ADMIN } = ROLES;
 
 const CreateUser = (props) => {
-  const { handleSubmit, submitting, history, ALL_USERS, createUser } = props;
+  const {
+    handleSubmit,
+    submitting,
+    history,
+    ALL_USERS,
+    createUser,
+    initialize,
+  } = props;
 
   const redirect = () => {
     history.push(ALL_USERS);
@@ -18,6 +25,10 @@ const CreateUser = (props) => {
   const submitHandler = (values) => {
     createUser(values, redirect);
   };
+
+  useEffect(() => {
+    initialize({ role: USER });
+  }, []);
 
   return (
     <div className={styles.container}>

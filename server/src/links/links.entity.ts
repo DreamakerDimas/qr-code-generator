@@ -1,6 +1,12 @@
 import { type } from 'node:os';
 import { User } from 'src/users/users.entity';
-import { Column, Entity, PrimaryColumn, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryColumn,
+  ManyToOne,
+  CreateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Links {
@@ -11,13 +17,13 @@ export class Links {
   name: string;
 
   @Column()
-  filename: string;
+  filename: string; // path to bucket file
 
   @Column({ default: true })
   isActive: boolean;
 
   @Column()
-  fileUrl: string;
+  fileUrl: string; // full URL path
 
   @Column()
   innerUrl: string;
@@ -25,6 +31,10 @@ export class Links {
   @Column()
   outerUrl: string;
 
-  @ManyToOne((type) => User, (user) => user.id)
+  @ManyToOne((type) => User, (user) => user.id, { onDelete: 'CASCADE' })
   userId: string;
+  // https://github.com/typeorm/typeorm/blob/master/docs/select-query-builder.md#joining-relations
+
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 }

@@ -10,13 +10,13 @@ export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
   @Get()
-  getProfile(@Request() req): Promise<User> {
+  getProfile(@Request() req): Promise<any> {
     const { id } = req.user;
     return this.profileService.getProfile(id);
   }
 
   @Put()
-  updateProfile(@Body() params, @Request() req) {
+  updateProfile(@Body() params, @Request() req): Promise<any> {
     const { id } = req.user;
     return this.profileService.updateProfile(id, params);
   }

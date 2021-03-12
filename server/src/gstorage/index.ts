@@ -1,6 +1,4 @@
-import * as path from 'path';
 import { Storage } from '@google-cloud/storage';
-import * as fs from 'fs';
 
 const storage = new Storage();
 const bucket = storage.bucket(process.env.GCLOUD_STORAGE_BUCKET);

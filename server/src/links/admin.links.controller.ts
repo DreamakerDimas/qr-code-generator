@@ -18,6 +18,8 @@ import { UpdateLinkDto } from './dto/update-link.dto';
 import { Links } from './links.entity';
 import { LinksService } from './links.service';
 import * as uuid from 'uuid';
+import { UserIdParam, IdAndUserIdParam } from './dto/id-param-link.dto';
+import { CreateLinkBody } from './dto/create-link-body.dto';
 
 @Roles(Role.ADMIN)
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -28,22 +30,21 @@ export class AdminLinksController {
   // Role: ADMIN
   // GET ALL
   @Get(':userId')
-  async getAll(@Param('userId') userId: string): Promise<Links[] | []> {
-    return await this.linksService.getAll(userId);
+  async getAll(@Param() param: UserIdParam, @Body() body): Promise<Links[] | []> {
+    const { userId } = param;
+    return await this.linksService.getAll(userId, body);
   }
 
   // GET ONE
   @Get(':userId/:id')
-  async getOne(
-    @Param('userId') userId: string,
-    @Param('id') id: string,
-  ): Promise<Links | null> {
+  async getOne(@Param() param: IdAndUserIdParam): Promise<Links | null> {
+    const { id, userId } = param;
     return await this.linksService.getOne(id, userId);
   }
 
   // POST CREATE
   @Post()
-  async create(@Body() body, @Request() req): Promise<Links> {
+  async create(@Body() body: CreateLinkBody, @Request() req): Promise<Links> {
     const id = uuid.v4();
     const filename = `${body.userId}/${id}.png`;
     const fileUrl = `https://storage.cloud.google.com/${process.env.GCLOUD_STORAGE_BUCKET}/${filename}`;
@@ -70,10 +71,8 @@ export class AdminLinksController {
 
   // DELETE
   @Delete(':userId/:id')
-  async remove(
-    @Param('userId') userId: string,
-    @Param('id') id: string,
-  ): Promise<any> {
+  async remove(@Param() param: IdAndUserIdParam): Promise<any> {
+    const { id, userId } = param;
     return await this.linksService.remove(id, userId);
   }
 }

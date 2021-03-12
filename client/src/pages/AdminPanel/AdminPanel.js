@@ -12,6 +12,7 @@ const AdminPanel = (props) => {
   const { history } = props;
 
   const setSwitcherHandler = (e) => {
+    // !!! useCallback
     history.push(e.currentTarget.dataset.id);
   };
 

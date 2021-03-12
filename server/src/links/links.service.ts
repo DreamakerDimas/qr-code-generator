@@ -13,8 +13,15 @@ export class LinksService {
     readonly linksRepository: Repository<Links>,
   ) {}
 
-  async getAll(userId: string): Promise<any> {
-    const linksArr = await this.linksRepository.find({ userId });
+  async getAll(userId: string, options): Promise<any> {
+    const { limit, offset } = options;
+
+    const linksArr = await this.linksRepository.find({
+      where: { userId },
+      order: { createdAt: 'DESC' },
+      take: limit,
+      skip: offset,
+    });
 
     return linksArr;
   }

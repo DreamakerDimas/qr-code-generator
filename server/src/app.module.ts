@@ -21,7 +21,7 @@ import { ConfigModule } from '@nestjs/config';
       password: 'postgres',
       database: 'qrgen',
       entities: [User, Links],
-      synchronize: true, // change to migrations
+      synchronize: true, // !!! change to migrations
     }),
     UserModule,
     AuthModule,

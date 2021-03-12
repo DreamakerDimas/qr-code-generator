@@ -47,7 +47,7 @@ const UserMenu = (props) => {
         onClick={handleClick}
         className={styles.menuBut}
       >
-        {user.name} <MoreVertIcon />
+        <span>{user.name}</span> <MoreVertIcon />
       </Button>
 
       <Menu

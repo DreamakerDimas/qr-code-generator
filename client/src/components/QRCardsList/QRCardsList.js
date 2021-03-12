@@ -38,6 +38,7 @@ const QRCardsList = (props) => {
   };
 
   const renderCodesList = () => {
+    // !!! QRCardListItem
     return codesArr.map((code) => (
       <div className={styles.cardItem} key={code.id}>
         <QRCard code={code} />

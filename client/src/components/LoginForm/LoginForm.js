@@ -32,6 +32,7 @@ const LoginForm = (props) => {
           placeholder="Password"
           className={styles.field}
         />
+
         {auth.error && <span>{auth.error.statusText}</span>}
         <Button className={styles.submit} type="submit" disabled={submitting}>
           LOGIN

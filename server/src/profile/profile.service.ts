@@ -6,8 +6,10 @@ import { UserService } from '../users/users.service';
 export class ProfileService {
   @Inject() private readonly userService: UserService;
 
-  async getProfile(id: string): Promise<User> {
-    return await this.userService.getById(id);
+  async getProfile(id: string): Promise<any> {
+    const user = await this.userService.getById(id);
+    const { password, ...profile } = user;
+    return profile;
   }
 
   async updateProfile(id: string, params: User) {

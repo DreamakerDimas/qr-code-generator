@@ -19,6 +19,7 @@ import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../constants';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { IdParam } from './dto/id-param.dto';
 
 @Roles(Role.ADMIN)
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -27,12 +28,13 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  getAll(): Promise<User[]> {
-    return this.userService.getAll();
+  getAll(@Body() body): Promise<User[]> {
+    return this.userService.getAll(body);
   }
 
   @Get(':id')
-  getOne(@Param('id') id: string): Promise<User> {
+  getOne(@Param() param: IdParam): Promise<User> {
+    const { id } = param;
     return this.userService.getById(id);
   }
 
@@ -44,14 +46,16 @@ export class UserController {
 
   @Put(':id')
   update(
-    @Param('id') id: string,
+    @Param() param: IdParam,
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<User | null> {
+    const { id } = param;
     return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string): Promise<DeleteResult> {
+  delete(@Param() param: IdParam): Promise<DeleteResult> {
+    const { id } = param;
     return this.userService.remove(id);
   }
 }

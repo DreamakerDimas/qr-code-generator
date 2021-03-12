@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { hash } from 'src/functions';
+import { deleteFile } from 'src/gstorage';
 import { Repository, DeleteResult } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -12,32 +14,54 @@ export class UserService {
     readonly userRepository: Repository<User>,
   ) {}
 
-  async getAll(): Promise<User[]> {
-    return await this.userRepository.find();
+  async getAll(options): Promise<User[]> {
+    const { limit, offset } = options;
+
+    return await this.userRepository.find({
+      order: { createdAt: 'DESC' },
+      take: limit,
+      skip: offset,
+    });
   }
 
   async getById(id: string): Promise<User | null> {
     return await this.userRepository.findOneOrFail(id);
   }
 
-  async findOne(params: object): Promise<User | null> {
+  async findOne(params: object, isAuth = false): Promise<User | null> {
+    if (isAuth)
+      return await this.userRepository
+        .createQueryBuilder('user')
+        .where('user.email = :email', params)
+        .addSelect('user.password')
+        .getOne();
+
     return await this.userRepository.findOne(params);
   }
 
   async create(userDto: CreateUserDto): Promise<User> {
+    const hashPass = await hash(userDto.password);
+    userDto.password = hashPass;
     return await this.userRepository.save(userDto);
   }
 
   async update(id: string, userDto: UpdateUserDto): Promise<User | null> {
     const user = await this.userRepository.findOneOrFail(id);
+
     if (!user.id) {
       console.error("User didn't exist");
     }
     await this.userRepository.update(id, userDto);
+
     return await this.userRepository.findOne(id);
   }
 
   async remove(id: string): Promise<DeleteResult> {
+    // const codesArr = await this.userRepository
+    //   .createQueryBuilder()
+    //   .alias('links')
+    //   .;
+    // await deleteFile(`${id}/*.png`);
     return await this.userRepository.delete(id);
   }
 }
