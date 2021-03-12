@@ -26,9 +26,9 @@ const QRCard = (props) => {
 
         <Typography className={styles.contentStatus}>
           {isActive ? (
-            <div className={styles.statusActive}>ACTIVE</div>
+            <span className={styles.statusActive}>ACTIVE</span>
           ) : (
-            <div className={styles.statusDisabled}>DISABLED</div>
+            <span className={styles.statusDisabled}>DISABLED</span>
           )}
         </Typography>
       </CardContent>

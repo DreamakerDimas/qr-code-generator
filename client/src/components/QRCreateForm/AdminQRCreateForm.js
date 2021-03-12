@@ -1,7 +1,9 @@
+import { Button } from '@material-ui/core';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { createUserCodeAction } from '../../actions/actionCreator';
+import styles from './QRCreateForm.module.sass';
 
 const AdminQRCreateForm = (props) => {
   const { handleSubmit, submitting, generateCode, userData } = props;
@@ -12,24 +14,28 @@ const AdminQRCreateForm = (props) => {
   };
 
   return (
-    <div className="formContainer">
+    <div className={styles.formContainer}>
       <form onSubmit={handleSubmit(submitHandler)}>
         <Field
           name="name"
           component="input"
           type="text"
           placeholder="Name your link"
+          className={styles.field}
         />
+
         <Field
           name="outerUrl"
           component="input"
           type="text"
           placeholder="URL address"
+          className={styles.field}
         />
+
         {/* error */}
-        <button type="submit" disabled={submitting}>
+        <Button className={styles.genBut} type="submit" disabled={submitting}>
           GENERATE
-        </button>
+        </Button>
       </form>
     </div>
   );

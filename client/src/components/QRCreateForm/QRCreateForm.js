@@ -15,6 +15,7 @@ const QRCreateForm = (props) => {
   return (
     <div className={styles.formContainer}>
       <h2>Generate Code:</h2>
+
       <form onSubmit={handleSubmit(submitHandler)}>
         <Field
           name="name"
@@ -23,6 +24,7 @@ const QRCreateForm = (props) => {
           placeholder="Name your link"
           className={styles.field}
         />
+
         <Field
           name="outerUrl"
           component="input"
@@ -30,6 +32,7 @@ const QRCreateForm = (props) => {
           placeholder="URL address"
           className={styles.field}
         />
+
         {/* error */}
         <Button className={styles.genBut} type="submit" disabled={submitting}>
           GENERATE

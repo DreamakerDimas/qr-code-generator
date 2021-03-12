@@ -53,7 +53,9 @@ export function* createUserSaga(action) {
   yield put({ type: CREATE_USER_REQUEST });
   try {
     yield restController.createUser(action.payload);
+
     action.redirect();
+
     yield put({ type: CREATE_USER_SUCCESS });
   } catch (err) {
     yield put({ type: CREATE_USER_ERROR, error: err.response });
@@ -102,7 +104,6 @@ export function* getUserCodesSaga(action) {
   yield put({ type: GET_USER_CODES_REQUEST });
   try {
     const { data } = yield restController.getUserCodes(action.payload);
-    console.log(data);
 
     yield put({ type: GET_USER_CODES_SUCCESS, payload: data });
   } catch (err) {

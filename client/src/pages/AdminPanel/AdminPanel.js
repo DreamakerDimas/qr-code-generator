@@ -1,8 +1,10 @@
+import { Button } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useParams, withRouter } from 'react-router';
 import AllUsers from '../../components/AdminPanel/AllUsers';
 import CreateUser from '../../components/AdminPanel/CreateUser';
 import { ADMIN_PANEL_STATES } from '../../constants';
+import styles from './AdminPanel.module.sass';
 
 const AdminPanel = (props) => {
   const { CREATE_USER, FIND_USER, ALL_USERS } = ADMIN_PANEL_STATES;
@@ -22,10 +24,15 @@ const AdminPanel = (props) => {
     switch (switcherId) {
       case ALL_USERS:
         return <AllUsers />;
+
       case FIND_USER:
         return <div>Find user</div>;
+
       case CREATE_USER:
         return <CreateUser history={history} ALL_USERS={ALL_USERS} />;
+
+      default:
+        return <AllUsers />;
     }
   };
 
@@ -34,19 +41,22 @@ const AdminPanel = (props) => {
   }, []);
 
   return (
-    <div className="container">
-      <div className="leftCol">
-        <button data-id={ALL_USERS} onClick={setSwitcherHandler}>
+    <div className={styles.panelContainer}>
+      <div className={styles.leftCol}>
+        <Button data-id={ALL_USERS} onClick={setSwitcherHandler}>
           All Users
-        </button>
-        <button data-id={FIND_USER} onClick={setSwitcherHandler}>
+        </Button>
+
+        <Button data-id={FIND_USER} onClick={setSwitcherHandler}>
           Find User
-        </button>
-        <button data-id={CREATE_USER} onClick={setSwitcherHandler}>
+        </Button>
+
+        <Button data-id={CREATE_USER} onClick={setSwitcherHandler}>
           Create User
-        </button>
+        </Button>
       </div>
-      <div className="content">{renderContent()}</div>
+
+      <div className={styles.content}>{renderContent()}</div>
     </div>
   );
 };

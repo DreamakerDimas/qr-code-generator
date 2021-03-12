@@ -28,7 +28,7 @@ const Header = (props) => {
     return (
       <>
         {user ? (
-          <UserMenu user={user} logout={logout} />
+          <UserMenu className={styles.menu} user={user} logout={logout} />
         ) : (
           <Button className={styles.loginBut} onClick={loginHandler}>
             LOGIN
@@ -40,18 +40,24 @@ const Header = (props) => {
 
   return (
     <AppBar color="primary" position="static">
-      <Grid container direction="row" justify="space-between">
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="stretch"
+      >
         <Grid item xs={1}>
           <Logo />
         </Grid>
-        <Grid
-          container
-          xs={11}
-          direction="row"
-          justify="flex-end"
-          align="center"
-        >
-          {renderButtons()}
+        <Grid className={styles.menuContainer} item xs={11}>
+          <Grid
+            container
+            direction="row"
+            justify="flex-end"
+            alignItems="center"
+          >
+            {renderButtons()}
+          </Grid>
         </Grid>
       </Grid>
     </AppBar>

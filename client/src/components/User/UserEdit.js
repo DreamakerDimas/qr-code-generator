@@ -1,10 +1,11 @@
-import { InputLabel } from '@material-ui/core';
+import { Button, InputLabel } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router';
 import { Field, reduxForm } from 'redux-form';
 import { updateUserAction } from '../../actions/actionCreator';
 import { ROLES } from '../../constants';
+import styles from './UserEdit.module.sass';
 
 const { USER, ADMIN } = ROLES;
 
@@ -20,40 +21,59 @@ const UserEdit = (props) => {
   return (
     <>
       {user && (
-        <div>
+        <div className={styles.container}>
           <form onSubmit={handleSubmit(submitHandler)}>
-            <InputLabel htmlFor="name">
-              Currently name is: "{user.name}"
-            </InputLabel>
-            <Field
-              name="name"
-              component="input"
-              type="text"
-              placeholder="Name"
-            />
-            <InputLabel htmlFor="email">
-              Currently email is: "{user.email}"
-            </InputLabel>
-            <Field
-              name="email"
-              component="input"
-              type="text"
-              placeholder="Email Address"
-            />
-            <Field
-              name="password"
-              component="input"
-              type="password"
-              placeholder="Password"
-            />
-            <Field name="role" component="select">
-              <option value={USER}>User</option>
-              <option value={ADMIN}>Admin</option>
-            </Field>
+            <div>
+              <InputLabel htmlFor="name" className={styles.label}>
+                Currently name is: "{user.name}"
+              </InputLabel>
+              <Field
+                name="name"
+                component="input"
+                type="text"
+                placeholder="Name"
+                className={styles.field}
+              />
+            </div>
+
+            <div>
+              <InputLabel htmlFor="email" className={styles.label}>
+                Currently email is: "{user.email}"
+              </InputLabel>
+              <Field
+                name="email"
+                component="input"
+                type="text"
+                placeholder="Email Address"
+                className={styles.field}
+              />
+            </div>
+
+            <div>
+              <Field
+                name="password"
+                component="input"
+                type="password"
+                placeholder="Password"
+                className={styles.field}
+              />
+            </div>
+
+            <div>
+              <Field name="role" component="select" className={styles.field}>
+                <option value={USER}>User</option>
+                <option value={ADMIN}>Admin</option>
+              </Field>
+            </div>
+
             {/* error */}
-            <button type="submit" disabled={submitting}>
+            <Button
+              type="submit"
+              disabled={submitting}
+              className={styles.editBut}
+            >
               EDIT
-            </button>
+            </Button>
           </form>
         </div>
       )}

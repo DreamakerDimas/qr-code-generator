@@ -5,6 +5,7 @@ import { getUsersAction } from '../../actions/actionCreator';
 import UserInfo from '../User/UserInfo';
 import { ADMIN_PANEL_STATES } from '../../constants';
 import { Button } from '@material-ui/core';
+import styles from './AllUsers.module.sass';
 
 const { ALL_USERS } = ADMIN_PANEL_STATES;
 
@@ -22,15 +23,20 @@ const AllUsers = (props) => {
   const renderUsers = () => {
     return users.usersArr.map((user) => {
       return (
-        <div key={user.id}>
+        <div className={styles.userContainer} key={user.id}>
           <UserInfo user={user} />
+
           <Button onClick={() => detailsHandler(user.id)}>Details</Button>
         </div>
       );
     });
   };
 
-  return <div>{users.isFetching ? 'loading' : renderUsers()}</div>;
+  return (
+    <div className={styles.container}>
+      {users.isFetching ? 'loading' : renderUsers()}
+    </div>
+  );
 };
 
 const mapStateToProps = (state) => {

@@ -6,6 +6,7 @@ import { deleteUserAction, getUserAction } from '../../actions/actionCreator';
 import UserCodes from '../../components/User/UserCodes';
 import UserEdit from '../../components/User/UserEdit';
 import UserInfo from '../../components/User/UserInfo';
+import styles from './UserPage.module.sass';
 
 const UserPage = (props) => {
   const { getUser, deleteUser, user, history } = props;
@@ -32,11 +33,17 @@ const UserPage = (props) => {
   }, []);
 
   return (
-    <div>
+    <div className={styles.outerContainer}>
       <UserInfo user={userData} />
-      <Button onClick={showCodesHandler}>Show QR Codes</Button>
-      <Button onClick={showEditHandler}>Edit</Button>
-      <Button onClick={deleteHandler}>Delete</Button>
+
+      <div className={styles.buttonsContainer}>
+        <Button onClick={showCodesHandler}>Show QR Codes</Button>
+
+        <Button onClick={showEditHandler}>Edit</Button>
+
+        <Button onClick={deleteHandler}>Delete</Button>
+      </div>
+
       {showEdit && <UserEdit user={userData} />}
       {showCodes && <UserCodes />}
     </div>
