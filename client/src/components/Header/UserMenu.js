@@ -19,6 +19,7 @@ const UserMenu = (props) => {
   };
 
   const handleAdmin = () => {
+    // useCallback
     history.push(`/admin_panel/${ALL_USERS}`);
     handleClose();
   };

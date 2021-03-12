@@ -35,6 +35,7 @@ const ProfileDisplay = (props) => {
                 <ListItemText className={styles.textItem} primary="Name:" />
                 <ListItemText className={styles.textItem} primary={user.name} />
               </ListItem>
+
               <ListItem className={styles.listItem}>
                 <ListItemText className={styles.textItem} primary="Email:" />
                 <ListItemText
@@ -42,6 +43,7 @@ const ProfileDisplay = (props) => {
                   primary={user.email}
                 />
               </ListItem>
+
               <ListItem className={styles.listItem}>
                 <ListItemText className={styles.textItem} primary="Role:" />
                 <ListItemText className={styles.textItem} primary={user.role} />

@@ -21,7 +21,7 @@ import * as uuid from 'uuid';
 import { IdParam } from './dto/id-param-link.dto';
 import { CreateMyLinkBody } from './dto/create-link-body.dto';
 
-@Roles(Role.USER, Role.ADMIN) // !!! change on USER
+@Roles(Role.USER, Role.ADMIN)
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('links/user/')
 export class LinksController {

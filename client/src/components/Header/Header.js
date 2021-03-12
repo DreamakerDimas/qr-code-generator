@@ -24,20 +24,6 @@ const Header = (props) => {
     history.push('/login');
   };
 
-  const renderButtons = () => {
-    return (
-      <>
-        {user ? (
-          <UserMenu className={styles.menu} user={user} logout={logout} />
-        ) : (
-          <Button className={styles.loginBut} onClick={loginHandler}>
-            LOGIN
-          </Button>
-        )}
-      </>
-    );
-  };
-
   return (
     <AppBar color="primary" position="static">
       <Grid
@@ -49,6 +35,7 @@ const Header = (props) => {
         <Grid item xs={1}>
           <Logo />
         </Grid>
+
         <Grid className={styles.menuContainer} item xs={11}>
           <Grid
             container
@@ -56,7 +43,13 @@ const Header = (props) => {
             justify="flex-end"
             alignItems="center"
           >
-            {renderButtons()}
+            {user ? (
+              <UserMenu className={styles.menu} user={user} logout={logout} />
+            ) : (
+              <Button className={styles.loginBut} onClick={loginHandler}>
+                LOGIN
+              </Button>
+            )}
           </Grid>
         </Grid>
       </Grid>

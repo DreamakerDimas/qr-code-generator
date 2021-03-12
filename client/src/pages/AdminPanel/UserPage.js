@@ -17,6 +17,7 @@ const UserPage = (props) => {
   const [showCodes, setShowCodes] = useState(false);
 
   const showEditHandler = () => {
+    // !!! useCallback
     setShowEdit((prev) => !prev);
   };
 

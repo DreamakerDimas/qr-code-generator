@@ -20,21 +20,19 @@ const AllUsers = (props) => {
     history.push(`${ALL_USERS}/${id}`);
   };
 
-  const renderUsers = () => {
-    return users.usersArr.map((user) => {
-      return (
-        <div className={styles.userContainer} key={user.id}>
-          <UserInfo user={user} />
-
-          <Button onClick={() => detailsHandler(user.id)}>Details</Button>
-        </div>
-      );
-    });
-  };
-
   return (
     <div className={styles.container}>
-      {users.isFetching ? 'loading' : renderUsers()}
+      {users.isFetching
+        ? 'loading'
+        : users.usersArr.map((user) => {
+            return (
+              <div className={styles.userContainer} key={user.id}>
+                <UserInfo user={user} />
+
+                <Button onClick={() => detailsHandler(user.id)}>Details</Button>
+              </div>
+            );
+          })}
     </div>
   );
 };

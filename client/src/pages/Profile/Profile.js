@@ -7,13 +7,14 @@ import styles from './Profile.module.sass';
 
 const Profile = (props) => {
   const [user, setUser] = useState(null);
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState(false); // route
 
   useEffect(() => {
     setUser(props.profile.data);
   }, [props.profile.data]);
 
   const changePageHandler = () => {
+    // !!! useCallback
     setIsEdit((prev) => !prev);
   };
 
