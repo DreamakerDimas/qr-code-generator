@@ -29,13 +29,16 @@ const ProfileDisplay = (props) => {
             title="Your Profile"
             subheader={registeredAt}
           />
+
           <CardContent className={styles.cardContent}>
             <List className={styles.listContainer}>
+              {/* Name */}
               <ListItem className={styles.listItem}>
                 <ListItemText className={styles.textItem} primary="Name:" />
                 <ListItemText className={styles.textItem} primary={user.name} />
               </ListItem>
 
+              {/* Email */}
               <ListItem className={styles.listItem}>
                 <ListItemText className={styles.textItem} primary="Email:" />
                 <ListItemText
@@ -44,6 +47,7 @@ const ProfileDisplay = (props) => {
                 />
               </ListItem>
 
+              {/* Role */}
               <ListItem className={styles.listItem}>
                 <ListItemText className={styles.textItem} primary="Role:" />
                 <ListItemText className={styles.textItem} primary={user.role} />

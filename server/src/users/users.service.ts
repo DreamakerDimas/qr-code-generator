@@ -23,7 +23,7 @@ export class UserService {
       skip: offset,
     });
 
-    const haveMore = count > offset + limit;
+    const haveMore = count > +offset + +limit;
 
     return { usersArr, haveMore };
   }

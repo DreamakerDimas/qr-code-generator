@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
@@ -9,9 +9,12 @@ import { Button } from '@material-ui/core';
 const LoginForm = (props) => {
   const { handleSubmit, submitting, login, auth, history } = props;
 
-  const submitHandler = (values) => {
-    login(values, history);
-  };
+  const submitHandler = useCallback(
+    (values) => {
+      login(values, history);
+    },
+    [history]
+  );
 
   return (
     <div className={styles.formContainer}>

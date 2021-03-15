@@ -1,6 +1,4 @@
-import React, { useEffect } from 'react';
-import QRCard from '../../components/QRCard/QRCard';
-import { Button } from '@material-ui/core';
+import React, { useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   deleteMyCode,
@@ -9,6 +7,7 @@ import {
   updateUserCodeAction,
 } from '../../actions/actionCreator';
 import styles from './QRCardsList.module.sass';
+import QRCardListItem from './QRCardListItem';
 
 const QRCardsList = (props) => {
   const {
@@ -21,46 +20,40 @@ const QRCardsList = (props) => {
     deleteMyCode,
   } = props;
 
-  const updateHandler = (id, currentStatus) => {
-    if (isAdminPanel) {
-      updateUserCodeStatus({ id, userId, isActive: !currentStatus });
-    } else {
-      updateMyCodeStatus({ id, isActive: !currentStatus });
-    }
-  };
+  const updateHandler = useCallback(
+    (id, currentStatus) => {
+      if (isAdminPanel) {
+        updateUserCodeStatus({ id, userId, isActive: !currentStatus });
+      } else {
+        updateMyCodeStatus({ id, isActive: !currentStatus });
+      }
+    },
+    [userId, isAdminPanel]
+  );
 
-  const deleteHandler = (id) => {
-    if (isAdminPanel) {
-      deleteUserCode({ id, userId });
-    } else {
-      deleteMyCode(id);
-    }
-  };
+  const deleteHandler = useCallback(
+    (id) => {
+      if (isAdminPanel) {
+        deleteUserCode({ id, userId });
+      } else {
+        deleteMyCode(id);
+      }
+    },
+    [isAdminPanel, userId]
+  );
 
-  const renderCodesList = () => {
-    // !!! QRCardListItem
-    return codesArr.map((code) => (
-      <div className={styles.cardItem} key={code.id}>
-        <QRCard code={code} />
-
-        <Button
-          className={styles.statusBut}
-          onClick={() => updateHandler(code.id, code.isActive)}
-        >
-          CHANGE STATUS
-        </Button>
-
-        <Button
-          className={styles.deleteBut}
-          onClick={() => deleteHandler(code.id)}
-        >
-          DELETE
-        </Button>
-      </div>
-    ));
-  };
-
-  return <div className={styles.cardsContainer}>{renderCodesList()}</div>;
+  return (
+    <div className={styles.cardsContainer}>
+      {codesArr.map((code) => (
+        <QRCardListItem
+          key={code.id}
+          code={code}
+          updateHandler={updateHandler}
+          deleteHandler={deleteHandler}
+        />
+      ))}
+    </div>
+  );
 };
 
 const mapDispatchToProps = (dispatch) => ({

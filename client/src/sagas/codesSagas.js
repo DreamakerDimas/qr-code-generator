@@ -19,17 +19,22 @@ const {
 
 export function* getMyCodesSaga(action) {
   yield put({ type: GET_MY_CODES_REQUEST });
+
   try {
     const {
       data: { codesArr, haveMore },
-    } = yield restController.getMyCodesRequest();
+    } = yield restController.getMyCodesRequest(action.settings);
 
-    const { settings } = yield select((state) => state.qrCodes);
+    const { codesArr: oldCodesArr, settings } = yield select(
+      (state) => state.qrCodes
+    );
+    const updatedArr = [...oldCodesArr, ...codesArr];
+
     settings.offset = settings.offset + settings.limit;
 
     yield put({
       type: GET_MY_CODES_SUCCESS,
-      payload: { codesArr, settings, haveMore },
+      payload: { codesArr: updatedArr, settings, haveMore },
     });
   } catch (err) {
     yield put({ type: GET_MY_CODES_ERROR, error: err.response });
@@ -43,12 +48,12 @@ export function* createQRCodeSaga(action) {
 
     const { codesArr, settings } = yield select((state) => state.qrCodes);
 
-    const updatedArr = [data, ...codesArr];
-    settings.offset = setting.offset + 1;
+    const updatedArr = yield [data, ...codesArr];
+    const newSettings = { ...settings, offset: settings.offset++ };
 
     yield put({
       type: CREATE_QR_CODE_SUCCESS,
-      payload: { updatedArr, settings },
+      payload: { codesArr: updatedArr, settings: newSettings },
     });
   } catch (err) {
     yield put({ type: CREATE_QR_CODE_ERROR, error: err.response });

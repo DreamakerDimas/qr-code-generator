@@ -8,6 +8,7 @@ const {
   CREATE_USER_REQUEST,
   CREATE_USER_SUCCESS,
   CREATE_USER_ERROR,
+  CLEAR_ALL_USERS,
 } = ADMIN_ACTIONS;
 
 const initState = {
@@ -35,6 +36,8 @@ export default function (state = initState, action) {
         ...state,
         error: null,
         isFetching: false,
+        usersArr: action.payload.usersArr,
+        settings: action.payload.settings,
       };
     case GET_USERS_SUCCESS:
       return {
@@ -52,6 +55,8 @@ export default function (state = initState, action) {
         isFetching: false,
         error: action.error,
       };
+    case CLEAR_ALL_USERS:
+      return initState;
     default:
       return state;
   }

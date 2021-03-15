@@ -1,36 +1,41 @@
 import { Button } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useParams, withRouter } from 'react-router';
-import { deleteUserAction, getUserAction } from '../../actions/actionCreator';
+import {
+  clearUserStoreAction,
+  deleteUserAction,
+  getUserAction,
+} from '../../actions/actionCreator';
 import UserCodes from '../../components/User/UserCodes';
 import UserEdit from '../../components/User/UserEdit';
 import UserInfo from '../../components/User/UserInfo';
 import styles from './UserPage.module.sass';
 
 const UserPage = (props) => {
-  const { getUser, deleteUser, user, history } = props;
+  const { getUser, deleteUser, clearUser, user, history } = props;
   const { id } = useParams();
   const { userData } = user;
 
   const [showEdit, setShowEdit] = useState(false);
   const [showCodes, setShowCodes] = useState(false);
 
-  const showEditHandler = () => {
-    // !!! useCallback
+  const showEditHandler = useCallback(() => {
     setShowEdit((prev) => !prev);
-  };
+  }, []);
 
-  const showCodesHandler = () => {
+  const showCodesHandler = useCallback(() => {
     setShowCodes((prev) => !prev);
-  };
+  }, []);
 
-  const deleteHandler = () => {
+  const deleteHandler = useCallback(() => {
     deleteUser(id, history);
-  };
+  }, [id, history]);
 
   useEffect(() => {
     getUser(id);
+
+    return clearUser;
   }, []);
 
   return (
@@ -59,6 +64,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   getUser: (id) => dispatch(getUserAction(id)),
   deleteUser: (id, history) => dispatch(deleteUserAction(id, history)),
+  clearUser: () => dispatch(clearUserStoreAction()),
 });
 
 export default withRouter(

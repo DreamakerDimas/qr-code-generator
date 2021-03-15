@@ -1,24 +1,48 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getMyCodes } from '../../actions/actionCreator';
+import { clearMyCodesAction, getMyCodes } from '../../actions/actionCreator';
 
-import QRCard from '../../components/QRCard/QRCard';
 import QRCardsList from '../../components/QRCardsList/QRCardsList';
 import QRCreateForm from '../../components/QRCreateForm/QRCreateForm';
 
 const QRCodes = (props) => {
-  const { getCodes, qrCodes } = props;
-  const { isFetching, error, codesArr } = qrCodes;
+  const { getCodes, clearCodes, qrCodes } = props;
+  const { isFetching, error, codesArr, haveMore, settings } = qrCodes;
 
   useEffect(() => {
-    getCodes();
+    getCodes(settings);
+
+    return clearCodes;
   }, []);
+
+  // scroll lazy load
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentPosition =
+        window.innerHeight + document.documentElement.scrollTop;
+      const isLoadNotNeed =
+        !haveMore ||
+        isFetching ||
+        currentPosition !== document.documentElement.offsetHeight;
+
+      if (isLoadNotNeed) return;
+
+      getCodes(settings);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isFetching, haveMore, settings]);
 
   return (
     <>
       <QRCreateForm />
 
       <QRCardsList codesArr={codesArr} />
+      {isFetching && 'loading'}
     </>
   );
 };
@@ -29,7 +53,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  getCodes: () => dispatch(getMyCodes()),
+  getCodes: (settings) => dispatch(getMyCodes(settings)),
+  clearCodes: () => dispatch(clearMyCodesAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QRCodes);

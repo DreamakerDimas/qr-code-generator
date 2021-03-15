@@ -1,5 +1,5 @@
 import { Button } from '@material-ui/core';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { createUserCodeAction } from '../../actions/actionCreator';
@@ -8,10 +8,13 @@ import styles from './QRCreateForm.module.sass';
 const AdminQRCreateForm = (props) => {
   const { handleSubmit, submitting, generateCode, userData } = props;
 
-  const submitHandler = (values) => {
-    const data = { userId: userData.id, ...values };
-    generateCode(data);
-  };
+  const submitHandler = useCallback(
+    (values) => {
+      const data = { userId: userData.id, ...values };
+      generateCode(data);
+    },
+    [userData]
+  );
 
   return (
     <div className={styles.formContainer}>

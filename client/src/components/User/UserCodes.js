@@ -1,17 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { getUserCodesAction } from '../../actions/actionCreator';
+import {
+  clearUserCodesAction,
+  getUserCodesAction,
+} from '../../actions/actionCreator';
 
 import QRCardsList from '../../components/QRCardsList/QRCardsList';
 import AdminQRCreateForm from '../QRCreateForm/AdminQRCreateForm';
 
 const UserCodes = (props) => {
-  const { getUserCodes, user } = props;
-  const { isFetching, error, userCodes, userData } = user;
+  const { getUserCodes, clearUserCodes, user } = props;
+  const { isFetching, error, haveMore, userCodes, userData, settings } = user;
+
+  const payload = {
+    userId: userData.id,
+    limit: settings.limit,
+    offset: settings.offset,
+  };
 
   useEffect(() => {
-    getUserCodes(userData.id);
+    getUserCodes(payload);
+
+    return clearUserCodes;
   }, []);
+
+  // scroll lazy load
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentPosition =
+        window.innerHeight + document.documentElement.scrollTop;
+      const isLoadNotNeed =
+        !haveMore ||
+        isFetching ||
+        currentPosition !== document.documentElement.offsetHeight;
+
+      if (isLoadNotNeed) return;
+
+      getUserCodes(payload);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isFetching, haveMore, settings]);
 
   return (
     <>
@@ -22,6 +55,7 @@ const UserCodes = (props) => {
         userId={userData.id}
         isAdminPanel={true}
       />
+      {isFetching && 'loading'}
     </>
   );
 };
@@ -32,7 +66,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  getUserCodes: (id) => dispatch(getUserCodesAction(id)),
+  getUserCodes: (data) => dispatch(getUserCodesAction(data)),
+  clearUserCodes: () => dispatch(clearUserCodesAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserCodes);

@@ -14,6 +14,7 @@ const {
   DELETE_MY_CODE_REQUEST,
   DELETE_MY_CODE_SUCCESS,
   DELETE_MY_CODE_ERROR,
+  CLEAR_MY_CODES,
 } = CODES_ACTIONS;
 
 const initState = {
@@ -52,7 +53,7 @@ export default function (state = initState, action) {
         ...state,
         isFetching: false,
         error: null,
-        codesArr: action.payload.updatedArr,
+        codesArr: action.payload.codesArr,
         settings: action.payload.settings,
       };
     case UPDATE_MY_CODE_SUCCESS:
@@ -71,6 +72,8 @@ export default function (state = initState, action) {
         isFetching: false,
         error: action.error,
       };
+    case CLEAR_MY_CODES:
+      return initState;
     default:
       return state;
   }

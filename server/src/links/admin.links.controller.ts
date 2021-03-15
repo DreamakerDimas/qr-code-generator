@@ -18,7 +18,7 @@ import { UpdateLinkDto } from './dto/update-link.dto';
 import { Links } from './links.entity';
 import { LinksService } from './links.service';
 import * as uuid from 'uuid';
-import { UserIdParam, IdAndUserIdParam } from './dto/id-param-link.dto';
+import { UserIdOptionsParam, IdAndUserIdParam } from './dto/id-param-link.dto';
 import { CreateLinkBody } from './dto/create-link-body.dto';
 import { UserService } from 'src/users/users.service';
 
@@ -33,15 +33,12 @@ export class AdminLinksController {
 
   // Role: ADMIN
   // GET ALL
-  @Get(':userId')
-  async getAll(
-    @Param() param: UserIdParam,
-    @Body() body,
-  ): Promise<Links[] | []> {
-    const { userId } = param;
+  @Get(':userId/:limit/:offset')
+  async getAll(@Param() param: UserIdOptionsParam): Promise<Links[] | []> {
+    const { userId, limit, offset } = param;
     const user = { id: userId };
     // !!! body - options
-    return await this.linksService.getAll(user, body);
+    return await this.linksService.getAll(user, { limit, offset });
   }
 
   // GET ONE

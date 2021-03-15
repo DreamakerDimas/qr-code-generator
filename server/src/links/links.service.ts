@@ -28,7 +28,7 @@ export class LinksService {
       skip: offset,
     });
 
-    const haveMore = count > offset + limit;
+    const haveMore = count > +offset + +limit;
 
     return { codesArr: linksArr, haveMore };
   }

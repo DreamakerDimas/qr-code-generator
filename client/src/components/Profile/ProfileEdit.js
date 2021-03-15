@@ -1,5 +1,5 @@
 import { Button, InputLabel, StylesProvider } from '@material-ui/core';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { updateProfileAction } from '../../actions/actionCreator';
@@ -8,9 +8,9 @@ import styles from './ProfileEdit.module.sass';
 const ProfileEdit = (props) => {
   const { user, handleSubmit, submitting, updateProfile } = props;
 
-  const submitHandler = (values) => {
+  const submitHandler = useCallback((values) => {
     updateProfile(values);
-  };
+  }, []);
 
   return (
     <div className={styles.formContainer}>
@@ -27,6 +27,7 @@ const ProfileEdit = (props) => {
             className={styles.field}
           />
         </div>
+
         <div>
           <InputLabel htmlFor="email">
             Currently your email is: "{user.email}"
@@ -39,6 +40,7 @@ const ProfileEdit = (props) => {
             className={styles.field}
           />
         </div>
+
         {/* error */}
         <Button className={styles.submit} type="submit" disabled={submitting}>
           EDIT

@@ -41,14 +41,20 @@ export function* getUsersSaga(action) {
   try {
     const {
       data: { usersArr, haveMore },
-    } = yield restController.getUsers();
+    } = yield restController.getUsers(action.settings);
 
-    const { settings } = yield select((state) => state.users);
-    settings.offset = settings.offset + settings.limit;
+    const { settings, usersArr: oldUsersArr } = yield select(
+      (state) => state.users
+    );
+    const newSettings = {
+      ...settings,
+      offset: settings.offset + settings.limit,
+    };
+    const updatedUsersArr = [...oldUsersArr, ...usersArr];
 
     yield put({
       type: GET_USERS_SUCCESS,
-      payload: { usersArr, settings, haveMore },
+      payload: { usersArr: updatedUsersArr, settings: newSettings, haveMore },
     });
   } catch (err) {
     yield put({ type: GET_USERS_ERROR, error: err.response });
@@ -56,7 +62,6 @@ export function* getUsersSaga(action) {
 }
 
 // for one user:
-
 export function* createUserSaga(action) {
   yield put({ type: CREATE_USER_REQUEST });
   try {
@@ -64,7 +69,15 @@ export function* createUserSaga(action) {
 
     action.redirect();
 
-    yield put({ type: CREATE_USER_SUCCESS });
+    const { usersArr, settings } = select((state) => state.users);
+
+    const updatedArr = [data, ...usersArr];
+    const newSettings = { ...settings, offset: settings.offset++ };
+
+    yield put({
+      type: CREATE_USER_SUCCESS,
+      payload: { usersArr: updatedArr, settings: newSettings },
+    });
   } catch (err) {
     yield put({ type: CREATE_USER_ERROR, error: err.response });
   }
@@ -115,12 +128,19 @@ export function* getUserCodesSaga(action) {
       data: { codesArr, haveMore },
     } = yield restController.getUserCodes(action.payload);
 
-    const { settings } = yield select((state) => state.user);
-    settings.offset = settings.offset + settings.limit;
+    const { settings, userCodes: oldCodesArr } = yield select(
+      (state) => state.user
+    );
+
+    const newSettings = {
+      ...settings,
+      offset: settings.offset + settings.limit,
+    };
+    const updatedArr = [...oldCodesArr, ...codesArr];
 
     yield put({
       type: GET_USER_CODES_SUCCESS,
-      payload: { codesArr, settings, haveMore },
+      payload: { codesArr: updatedArr, settings: newSettings, haveMore },
     });
   } catch (err) {
     yield put({ type: GET_USER_CODES_ERROR, error: err.response });
@@ -165,6 +185,7 @@ export function* updateUserCodeSaga(action) {
 
 export function* deleteUserCodeSaga(action) {
   yield put({ type: DELETE_USER_CODE_REQUEST });
+
   try {
     yield restController.deleteUserCode(action.payload);
 

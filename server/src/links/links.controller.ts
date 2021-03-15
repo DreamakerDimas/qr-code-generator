@@ -33,10 +33,10 @@ export class LinksController {
 
   // Role USER
   // GET ALL FOR MY
-  @Get()
-  getAll(@Request() req, @Body() body): Promise<any> {
-    // !!! body - options
-    return this.linksService.getAll(req.user.id, body);
+  @Get(':limit/:offset')
+  getAll(@Request() req, @Param() param): Promise<any> {
+    console.log(param);
+    return this.linksService.getAll(req.user.id, param);
   }
 
   // GET ONE OF MY

@@ -8,9 +8,9 @@ import styles from './QRCreateForm.module.sass';
 const QRCreateForm = (props) => {
   const { handleSubmit, submitting, generateCode } = props;
 
-  const submitHandler = (values) => {
+  const submitHandler = useCallback((values) => {
     generateCode(values);
-  };
+  }, []);
 
   return (
     <div className={styles.formContainer}>

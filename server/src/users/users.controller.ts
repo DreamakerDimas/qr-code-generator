@@ -27,10 +27,11 @@ import { IdParam } from './dto/id-param.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get()
-  getAll(@Body() body): Promise<User[]> {
-    // !!! body - options
-    return this.userService.getAll(body);
+  @Get(':limit/:offset')
+  getAll(@Param() param): Promise<User[]> {
+    // !!! validation
+
+    return this.userService.getAll(param);
   }
 
   @Get(':id')
@@ -42,6 +43,7 @@ export class UserController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   create(@Body() user: CreateUserDto): Promise<User> {
+    console.log(user);
     return this.userService.create(user);
   }
 

@@ -1,5 +1,5 @@
 import { Button } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import ProfileDisplay from '../../components/Profile/ProfileDisplay';
 import ProfileEdit from '../../components/Profile/ProfileEdit';
@@ -13,10 +13,9 @@ const Profile = (props) => {
     setUser(props.profile.data);
   }, [props.profile.data]);
 
-  const changePageHandler = () => {
-    // !!! useCallback
+  const changePageHandler = useCallback(() => {
     setIsEdit((prev) => !prev);
-  };
+  }, []);
 
   return (
     <div className={styles.profileContainer}>

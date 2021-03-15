@@ -23,6 +23,8 @@ const {
   DELETE_USER_CODE_REQUEST,
   DELETE_USER_CODE_SUCCESS,
   DELETE_USER_CODE_ERROR,
+  CLEAR_USER_CODES,
+  CLEAR_USER,
 } = ADMIN_ACTIONS;
 
 const initState = {
@@ -104,6 +106,13 @@ export default function (state = initState, action) {
         isFetching: false,
         error: action.error,
       };
+    case CLEAR_USER_CODES:
+      return {
+        ...state,
+        userCodes: [],
+      };
+    case CLEAR_USER:
+      return initState;
     default:
       return state;
   }

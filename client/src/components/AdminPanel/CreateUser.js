@@ -1,5 +1,5 @@
 import { Button } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { createUserAction } from '../../actions/actionCreator';
@@ -22,9 +22,9 @@ const CreateUser = (props) => {
     history.push(ALL_USERS);
   };
 
-  const submitHandler = (values) => {
+  const submitHandler = useCallback((values) => {
     createUser(values, redirect);
-  };
+  }, []);
 
   useEffect(() => {
     initialize({ role: USER });

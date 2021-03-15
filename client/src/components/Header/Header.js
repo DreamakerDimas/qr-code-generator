@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { AppBar, Button, Toolbar, Grid } from '@material-ui/core';
 import Logo from '../Logo/Logo';
 import { connect } from 'react-redux';
@@ -20,9 +20,9 @@ const Header = (props) => {
     setUser(profile.data);
   }, [profile]);
 
-  const loginHandler = () => {
+  const loginHandler = useCallback(() => {
     history.push('/login');
-  };
+  }, [history]);
 
   return (
     <AppBar color="primary" position="static">

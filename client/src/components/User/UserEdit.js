@@ -1,5 +1,5 @@
 import { Button, InputLabel } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router';
 import { Field, reduxForm } from 'redux-form';
@@ -13,10 +13,13 @@ const UserEdit = (props) => {
   const { user, handleSubmit, submitting, updateUser } = props;
   const { id } = useParams();
 
-  const submitHandler = (values) => {
-    const payload = { id, body: values };
-    updateUser(payload);
-  };
+  const submitHandler = useCallback(
+    (values) => {
+      const payload = { id, body: values };
+      updateUser(payload);
+    },
+    [id]
+  );
 
   return (
     <>

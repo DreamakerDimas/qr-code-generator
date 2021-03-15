@@ -1,5 +1,5 @@
 import { Button } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams, withRouter } from 'react-router';
 import AllUsers from '../../components/AdminPanel/AllUsers';
 import CreateUser from '../../components/AdminPanel/CreateUser';
@@ -11,10 +11,12 @@ const AdminPanel = (props) => {
   const { switcherId } = useParams();
   const { history } = props;
 
-  const setSwitcherHandler = (e) => {
-    // !!! useCallback
-    history.push(e.currentTarget.dataset.id);
-  };
+  const setSwitcherHandler = useCallback(
+    (e) => {
+      history.push(e.currentTarget.dataset.id);
+    },
+    [history]
+  );
 
   const redirectWrongId = () => {
     if (switcherId !== CREATE_USER || FIND_USER || ALL_USERS)
