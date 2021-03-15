@@ -29,6 +29,7 @@ export class UserController {
 
   @Get()
   getAll(@Body() body): Promise<User[]> {
+    // !!! body - options
     return this.userService.getAll(body);
   }
 
@@ -40,17 +41,17 @@ export class UserController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.userService.create(createUserDto);
+  create(@Body() user: CreateUserDto): Promise<User> {
+    return this.userService.create(user);
   }
 
   @Put(':id')
   update(
     @Param() param: IdParam,
-    @Body() updateUserDto: UpdateUserDto,
+    @Body() user: UpdateUserDto,
   ): Promise<User | null> {
     const { id } = param;
-    return this.userService.update(id, updateUserDto);
+    return this.userService.update(id, user);
   }
 
   @Delete(':id')

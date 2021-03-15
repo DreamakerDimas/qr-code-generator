@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsObject, IsString, IsUUID } from 'class-validator';
+import { User } from 'src/users/users.entity';
 
 export class CreateLinkDto {
   @IsUUID()
@@ -24,6 +25,6 @@ export class CreateLinkDto {
   @IsNotEmpty()
   readonly fileUrl: string;
 
-  @IsUUID()
-  readonly userId: string;
+  @IsObject()
+  readonly user: User;
 }

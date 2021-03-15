@@ -31,10 +31,9 @@ export class Links {
   @Column()
   outerUrl: string;
 
-  @ManyToOne((type) => User, (user) => user.id, { onDelete: 'CASCADE' })
-  userId: string;
-  // https://github.com/typeorm/typeorm/blob/master/docs/select-query-builder.md#joining-relations
-
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
+
+  @ManyToOne((type) => User, (user) => user.links, { onDelete: 'CASCADE' })
+  user: User;
 }

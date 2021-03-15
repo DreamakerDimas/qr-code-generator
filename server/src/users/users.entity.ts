@@ -1,4 +1,3 @@
-import { Links } from 'src/links/links.entity';
 import {
   PrimaryGeneratedColumn,
   Column,
@@ -8,10 +7,10 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Role } from '../constants';
+import { Links } from '../links/links.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  @OneToMany((type) => Links, (links) => links.userId)
   id: string;
 
   @Column()
@@ -36,5 +35,6 @@ export class User {
   @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
-  // onetomany
+  @OneToMany((type) => Links, (links) => links.user)
+  links: Links[];
 }

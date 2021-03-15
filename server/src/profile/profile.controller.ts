@@ -17,6 +17,7 @@ export class ProfileController {
 
   @Put()
   updateProfile(@Body() params, @Request() req): Promise<any> {
+    // !!! params - User
     const { id } = req.user;
     return this.profileService.updateProfile(id, params);
   }

@@ -20,17 +20,22 @@ import { UpdateMyLinkDto } from './dto/update-link.dto';
 import * as uuid from 'uuid';
 import { IdParam } from './dto/id-param-link.dto';
 import { CreateMyLinkBody } from './dto/create-link-body.dto';
+import { UserService } from 'src/users/users.service';
 
 @Roles(Role.USER, Role.ADMIN)
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('links/user/')
 export class LinksController {
-  constructor(private linksService: LinksService) {}
+  constructor(
+    private linksService: LinksService,
+    private userService: UserService,
+  ) {}
 
   // Role USER
   // GET ALL FOR ME
   @Get()
   getAll(@Request() req, @Body() body): Promise<Links[] | []> {
+    // !!! body - options
     return this.linksService.getAll(req.user.id, body);
   }
 
@@ -43,11 +48,13 @@ export class LinksController {
 
   //POST CREATE MY
   @Post()
-  create(@Body() body: CreateMyLinkBody, @Request() req): Promise<Links> {
+  async create(@Body() body: CreateMyLinkBody, @Request() req): Promise<Links> {
     const id = uuid.v4();
     const filename = `${req.user.id}/${id}.png`;
     const fileUrl = `https://storage.cloud.google.com/${process.env.GCLOUD_STORAGE_BUCKET}/${filename}`;
     const innerUrl = `${req.hostname}/redirect/${id}`;
+
+    const user = await this.userService.getById(req.user.id);
 
     const linkObj: CreateLinkDto = {
       id,
@@ -56,7 +63,7 @@ export class LinksController {
       fileUrl,
       innerUrl,
       outerUrl: body.outerUrl,
-      userId: req.user.id,
+      user,
     };
 
     return this.linksService.create(linkObj);
@@ -65,13 +72,15 @@ export class LinksController {
   // PUT UPDATE STATUS OF MY
   @Put()
   update(@Request() req, @Body() body: UpdateMyLinkDto): Promise<Links> {
-    return this.linksService.update(body.id, req.user.id, body.isActive);
+    const user = { id: req.user.id };
+    return this.linksService.update(body.id, user, body.isActive);
   }
 
   // DELETE MY
   @Delete(':id')
   remove(@Param() param: IdParam, @Request() req) {
     const { id } = param;
-    return this.linksService.remove(id, req.user.id);
+    const user = { id: req.user.id };
+    return this.linksService.remove(id, user);
   }
 }

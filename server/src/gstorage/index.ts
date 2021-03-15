@@ -16,6 +16,8 @@ export const deleteFile = async (filename) => {
   await fileHandler.delete();
 };
 
-export const downloadFile = async (filename) => {
-  const file = bucket.file(filename);
+export const deleteAllUserFiles = async (linksArr) => {
+  await linksArr.forEach(async (link) => {
+    await deleteFile(link.filename);
+  });
 };

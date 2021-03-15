@@ -3,8 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateLinkDto } from './dto/create-link.dto';
 import { Links } from './links.entity';
-import { uploadFromBuffer, deleteFile, downloadFile } from '../gstorage';
+import { uploadFromBuffer, deleteFile } from '../gstorage';
 import { toBuffer } from 'qrcode';
+import { User } from 'src/users/users.entity';
 
 @Injectable()
 export class LinksService {
@@ -13,11 +14,11 @@ export class LinksService {
     readonly linksRepository: Repository<Links>,
   ) {}
 
-  async getAll(userId: string, options): Promise<any> {
+  async getAll(user: object, options): Promise<any> {
     const { limit, offset } = options;
 
     const linksArr = await this.linksRepository.find({
-      where: { userId },
+      where: { user },
       order: { createdAt: 'DESC' },
       take: limit,
       skip: offset,
@@ -26,8 +27,8 @@ export class LinksService {
     return linksArr;
   }
 
-  async getOne(id: string, userId: string): Promise<Links | null> {
-    return await this.linksRepository.findOne({ id, userId });
+  async getOne(id: string, user: object): Promise<Links | null> {
+    return await this.linksRepository.findOne({ id, user });
   }
 
   async create(linkObj: CreateLinkDto): Promise<Links> {
@@ -49,21 +50,21 @@ export class LinksService {
     }
   }
 
-  async update(id, userId, isActive): Promise<Links> {
+  async update(id, user, isActive): Promise<Links> {
     await this.linksRepository.update(
       {
         id,
-        userId,
+        user,
       },
       { isActive },
     );
-    return await this.linksRepository.findOne({ id, userId });
+    return await this.linksRepository.findOne({ id, user });
   }
 
-  async remove(id, userId): Promise<any> {
-    const link = await this.linksRepository.findOne({ id });
+  async remove(id, user): Promise<any> {
+    const link = await this.linksRepository.findOne({ id, user });
 
     deleteFile(link.filename);
-    return await this.linksRepository.delete({ id, userId });
+    return await this.linksRepository.delete({ id, user });
   }
 }

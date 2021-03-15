@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { hash } from 'src/functions';
-import { deleteFile } from 'src/gstorage';
+import { deleteAllUserFiles, deleteFile } from 'src/gstorage';
 import { Repository, DeleteResult } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -57,11 +57,17 @@ export class UserService {
   }
 
   async remove(id: string): Promise<DeleteResult> {
-    // const codesArr = await this.userRepository
-    //   .createQueryBuilder()
-    //   .alias('links')
-    //   .;
-    // await deleteFile(`${id}/*.png`);
+    const user = await this.userRepository.findOne({
+      where: { id },
+      join: {
+        alias: 'user',
+        leftJoinAndSelect: {
+          links: 'user.links',
+        },
+      },
+    });
+
+    deleteAllUserFiles(user.links);
     return await this.userRepository.delete(id);
   }
 }
