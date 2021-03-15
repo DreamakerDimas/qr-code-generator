@@ -1,4 +1,5 @@
 import { ADMIN_ACTIONS } from '../actions/actionTypes';
+import { PAGINATION_LIMIT } from '../constants';
 
 const {
   GET_USER_REQUEST,
@@ -29,6 +30,11 @@ const initState = {
   error: null,
   userData: null,
   userCodes: [],
+  settings: {
+    limit: PAGINATION_LIMIT,
+    offset: 0,
+  },
+  haveMore: true,
 };
 
 export default function (state = initState, action) {
@@ -45,7 +51,6 @@ export default function (state = initState, action) {
         isFetching: true,
         error: null,
       };
-      break;
     case UPDATE_USER_SUCCESS:
     case GET_USER_SUCCESS:
       return {
@@ -54,26 +59,39 @@ export default function (state = initState, action) {
         error: null,
         userData: action.payload,
       };
-      break;
     case DELETE_USER_SUCCESS:
       return {
+        ...state,
         isFetching: false,
         error: null,
         userData: null,
         userCodes: [],
       };
-      break;
-    case DELETE_USER_CODE_SUCCESS:
-    case UPDATE_USER_CODE_SUCCESS:
-    case CREATE_USER_CODE_SUCCESS:
     case GET_USER_CODES_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        error: null,
+        userCodes: action.payload.codesArr,
+        settings: action.payload.settings,
+        haveMore: action.payload.haveMore,
+      };
+    case CREATE_USER_CODE_SUCCESS:
+    case DELETE_USER_CODE_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        error: null,
+        userCodes: action.payload.codesArr,
+        settings: action.payload.settings,
+      };
+    case UPDATE_USER_CODE_SUCCESS:
       return {
         ...state,
         isFetching: false,
         error: null,
         userCodes: action.payload,
       };
-      break;
     case DELETE_USER_CODE_ERROR:
     case UPDATE_USER_CODE_ERROR:
     case CREATE_USER_CODE_ERROR:
@@ -86,7 +104,6 @@ export default function (state = initState, action) {
         isFetching: false,
         error: action.error,
       };
-      break;
     default:
       return state;
   }

@@ -32,9 +32,9 @@ export class LinksController {
   ) {}
 
   // Role USER
-  // GET ALL FOR ME
+  // GET ALL FOR MY
   @Get()
-  getAll(@Request() req, @Body() body): Promise<Links[] | []> {
+  getAll(@Request() req, @Body() body): Promise<any> {
     // !!! body - options
     return this.linksService.getAll(req.user.id, body);
   }

@@ -1,4 +1,5 @@
 import { CODES_ACTIONS } from '../actions/actionTypes';
+import { PAGINATION_LIMIT } from '../constants';
 
 const {
   GET_MY_CODES_REQUEST,
@@ -19,6 +20,11 @@ const initState = {
   isFetching: true,
   error: null,
   codesArr: [],
+  settings: {
+    limit: PAGINATION_LIMIT,
+    offset: 0,
+  },
+  haveMore: true,
 };
 
 export default function (state = initState, action) {
@@ -32,11 +38,26 @@ export default function (state = initState, action) {
         isFetching: true,
         error: null,
       };
-    case DELETE_MY_CODE_SUCCESS:
-    case UPDATE_MY_CODE_SUCCESS:
-    case CREATE_QR_CODE_SUCCESS:
     case GET_MY_CODES_SUCCESS:
       return {
+        isFetching: false,
+        error: null,
+        codesArr: action.payload.codesArr,
+        settings: action.payload.settings,
+        haveMore: action.payload.haveMore,
+      };
+    case CREATE_QR_CODE_SUCCESS:
+    case DELETE_MY_CODE_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        error: null,
+        codesArr: action.payload.updatedArr,
+        settings: action.payload.settings,
+      };
+    case UPDATE_MY_CODE_SUCCESS:
+      return {
+        ...state,
         isFetching: false,
         error: null,
         codesArr: action.payload,

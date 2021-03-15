@@ -3,9 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateLinkDto } from './dto/create-link.dto';
 import { Links } from './links.entity';
-import { uploadFromBuffer, deleteFile } from '../gstorage';
+import {
+  uploadFromBuffer,
+  deleteFile,
+  isExist,
+  waitForUpload,
+} from '../gstorage';
 import { toBuffer } from 'qrcode';
-import { User } from 'src/users/users.entity';
 
 @Injectable()
 export class LinksService {
@@ -17,14 +21,16 @@ export class LinksService {
   async getAll(user: object, options): Promise<any> {
     const { limit, offset } = options;
 
-    const linksArr = await this.linksRepository.find({
+    const [linksArr, count] = await this.linksRepository.findAndCount({
       where: { user },
       order: { createdAt: 'DESC' },
       take: limit,
       skip: offset,
     });
 
-    return linksArr;
+    const haveMore = count > offset + limit;
+
+    return { codesArr: linksArr, haveMore };
   }
 
   async getOne(id: string, user: object): Promise<Links | null> {
@@ -37,12 +43,14 @@ export class LinksService {
       const { filename } = link;
 
       // QR generation to buffer and uploading
-      toBuffer(link.innerUrl, (err, buffer) => {
+      toBuffer(link.innerUrl, async (err, buffer) => {
         if (err) throw err;
         uploadFromBuffer(filename, buffer);
       });
 
-      return this.linksRepository.save(link);
+      await waitForUpload(filename);
+
+      return await this.linksRepository.save(link);
     } catch (err) {
       await this.linksRepository.delete(linkObj);
       // delete file

@@ -9,3 +9,4 @@ export const ADMIN_PANEL_STATES = {
   FIND_USER: 'FIND_USER',
   ALL_USERS: 'ALL_USERS',
 };
+export const PAGINATION_LIMIT = 10;

@@ -14,14 +14,18 @@ export class UserService {
     readonly userRepository: Repository<User>,
   ) {}
 
-  async getAll(options): Promise<User[]> {
+  async getAll(options): Promise<any> {
     const { limit, offset } = options;
 
-    return await this.userRepository.find({
+    const [usersArr, count] = await this.userRepository.findAndCount({
       order: { createdAt: 'DESC' },
       take: limit,
       skip: offset,
     });
+
+    const haveMore = count > offset + limit;
+
+    return { usersArr, haveMore };
   }
 
   async getById(id: string): Promise<User | null> {

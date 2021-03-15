@@ -20,9 +20,17 @@ const {
 export function* getMyCodesSaga(action) {
   yield put({ type: GET_MY_CODES_REQUEST });
   try {
-    const { data } = yield restController.getMyCodesRequest();
+    const {
+      data: { codesArr, haveMore },
+    } = yield restController.getMyCodesRequest();
 
-    yield put({ type: GET_MY_CODES_SUCCESS, payload: data });
+    const { settings } = yield select((state) => state.qrCodes);
+    settings.offset = settings.offset + settings.limit;
+
+    yield put({
+      type: GET_MY_CODES_SUCCESS,
+      payload: { codesArr, settings, haveMore },
+    });
   } catch (err) {
     yield put({ type: GET_MY_CODES_ERROR, error: err.response });
   }
@@ -33,10 +41,15 @@ export function* createQRCodeSaga(action) {
   try {
     const { data } = yield restController.createQRCode(action.payload);
 
-    const { codesArr } = yield select((state) => state.qrCodes);
-    const updatedArr = [data, ...codesArr];
+    const { codesArr, settings } = yield select((state) => state.qrCodes);
 
-    yield put({ type: CREATE_QR_CODE_SUCCESS, payload: updatedArr });
+    const updatedArr = [data, ...codesArr];
+    settings.offset = setting.offset + 1;
+
+    yield put({
+      type: CREATE_QR_CODE_SUCCESS,
+      payload: { updatedArr, settings },
+    });
   } catch (err) {
     yield put({ type: CREATE_QR_CODE_ERROR, error: err.response });
   }
@@ -64,10 +77,15 @@ export function* deleteQRCodeSaga(action) {
   try {
     yield restController.deleteMyCode(action.payload);
 
-    const { codesArr } = yield select((state) => state.qrCodes);
-    const updatedArr = codesArr.filter((code) => code.id !== action.payload);
+    const { codesArr, settings } = yield select((state) => state.qrCodes);
 
-    yield put({ type: DELETE_MY_CODE_SUCCESS, payload: updatedArr });
+    const updatedArr = codesArr.filter((code) => code.id !== action.payload);
+    settings.offset = settings.offset - 1;
+
+    yield put({
+      type: DELETE_MY_CODE_SUCCESS,
+      payload: { updatedArr, settings },
+    });
   } catch (err) {
     yield put({ type: DELETE_MY_CODE_ERROR, error: err.response });
   }

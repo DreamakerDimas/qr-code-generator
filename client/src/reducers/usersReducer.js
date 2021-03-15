@@ -1,4 +1,5 @@
 import { ADMIN_ACTIONS } from '../actions/actionTypes';
+import { PAGINATION_LIMIT } from '../constants';
 
 const {
   GET_USERS_REQUEST,
@@ -13,6 +14,11 @@ const initState = {
   isFetching: true,
   error: null,
   usersArr: [],
+  settings: {
+    limit: PAGINATION_LIMIT,
+    offset: 0,
+  },
+  haveMore: true,
 };
 
 export default function (state = initState, action) {
@@ -32,9 +38,12 @@ export default function (state = initState, action) {
       };
     case GET_USERS_SUCCESS:
       return {
+        ...state,
         isFetching: false,
         error: null,
-        usersArr: action.payload,
+        usersArr: action.payload.usersArr,
+        settings: action.payload.settings,
+        haveMore: action.payload.haveMore,
       };
     case CREATE_USER_ERROR:
     case GET_USERS_ERROR:

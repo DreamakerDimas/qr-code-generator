@@ -3,12 +3,35 @@ import { Storage } from '@google-cloud/storage';
 const storage = new Storage();
 const bucket = storage.bucket(process.env.GCLOUD_STORAGE_BUCKET);
 
-export const uploadFromBuffer = async (filename, buffer) => {
+export const isExist = async (filename) => {
   const fileHandler = bucket.file(filename);
   const [fileExists] = await fileHandler.exists();
+  return fileExists;
+};
 
-  if (!fileExists) return await fileHandler.save(buffer);
+export const uploadFromBuffer = async (filename, buffer) => {
+  const fileHandler = bucket.file(filename);
+
+  if (isExist) return await fileHandler.save(buffer);
   return await new Promise((resolve, reject) => resolve(filename));
+};
+
+export const waitForUpload = async (filename) => {
+  return new Promise((resolve, reject) => {
+    let i = 6;
+    const check = async () => {
+      const isUploaded = await isExist(filename);
+
+      if (isUploaded) {
+        resolve(true);
+        return;
+      }
+      if (i--) {
+        setTimeout(await check, 200);
+      }
+    };
+    check();
+  });
 };
 
 export const deleteFile = async (filename) => {

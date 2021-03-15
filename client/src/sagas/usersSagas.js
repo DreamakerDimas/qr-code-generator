@@ -39,9 +39,17 @@ const getAllUsersLocation = (pathname, id) => {
 export function* getUsersSaga(action) {
   yield put({ type: GET_USERS_REQUEST });
   try {
-    const { data } = yield restController.getUsers();
+    const {
+      data: { usersArr, haveMore },
+    } = yield restController.getUsers();
 
-    yield put({ type: GET_USERS_SUCCESS, payload: data });
+    const { settings } = yield select((state) => state.users);
+    settings.offset = settings.offset + settings.limit;
+
+    yield put({
+      type: GET_USERS_SUCCESS,
+      payload: { usersArr, settings, haveMore },
+    });
   } catch (err) {
     yield put({ type: GET_USERS_ERROR, error: err.response });
   }
@@ -103,9 +111,17 @@ export function* deleteUserSaga(action) {
 export function* getUserCodesSaga(action) {
   yield put({ type: GET_USER_CODES_REQUEST });
   try {
-    const { data } = yield restController.getUserCodes(action.payload);
+    const {
+      data: { codesArr, haveMore },
+    } = yield restController.getUserCodes(action.payload);
 
-    yield put({ type: GET_USER_CODES_SUCCESS, payload: data });
+    const { settings } = yield select((state) => state.user);
+    settings.offset = settings.offset + settings.limit;
+
+    yield put({
+      type: GET_USER_CODES_SUCCESS,
+      payload: { codesArr, settings, haveMore },
+    });
   } catch (err) {
     yield put({ type: GET_USER_CODES_ERROR, error: err.response });
   }
@@ -116,10 +132,15 @@ export function* createUserCodeSaga(action) {
   try {
     const { data } = yield restController.createUserCode(action.payload);
 
-    const { userCodes } = yield select((state) => state.user);
-    const updatedArr = [data, ...userCodes];
+    const { userCodes, settings } = yield select((state) => state.user);
+    const codesArr = [data, ...userCodes];
 
-    yield put({ type: CREATE_USER_CODE_SUCCESS, payload: updatedArr });
+    settings.offset++;
+
+    yield put({
+      type: CREATE_USER_CODE_SUCCESS,
+      payload: { codesArr, settings },
+    });
   } catch (err) {
     yield put({ type: CREATE_USER_CODE_ERROR, error: err.response });
   }
@@ -147,12 +168,15 @@ export function* deleteUserCodeSaga(action) {
   try {
     yield restController.deleteUserCode(action.payload);
 
-    const { userCodes } = yield select((state) => state.user);
-    const updatedArr = userCodes.filter(
-      (code) => code.id !== action.payload.id
-    );
+    const { userCodes, settings } = yield select((state) => state.user);
+    const codesArr = userCodes.filter((code) => code.id !== action.payload.id);
 
-    yield put({ type: DELETE_USER_CODE_SUCCESS, payload: updatedArr });
+    settings.offset--;
+
+    yield put({
+      type: DELETE_USER_CODE_SUCCESS,
+      payload: { codesArr, settings },
+    });
   } catch (err) {
     yield put({ type: DELETE_USER_CODE_ERROR, error: err.response });
   }
