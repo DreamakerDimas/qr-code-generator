@@ -29,6 +29,7 @@ const {
 
 const initState = {
   isFetching: true,
+  isLoadingCodes: true,
   error: null,
   userData: null,
   userCodes: [],
@@ -41,16 +42,21 @@ const initState = {
 
 export default function (state = initState, action) {
   switch (action.type) {
-    case DELETE_USER_CODE_REQUEST:
-    case UPDATE_USER_CODE_REQUEST:
-    case CREATE_USER_CODE_REQUEST:
-    case GET_USER_CODES_REQUEST:
     case DELETE_USER_REQUEST:
     case UPDATE_USER_REQUEST:
     case GET_USER_REQUEST:
       return {
         ...state,
         isFetching: true,
+        error: null,
+      };
+    case DELETE_USER_CODE_REQUEST:
+    case UPDATE_USER_CODE_REQUEST:
+    case CREATE_USER_CODE_REQUEST:
+    case GET_USER_CODES_REQUEST:
+      return {
+        ...state,
+        isLoadingCodes: true,
         error: null,
       };
     case UPDATE_USER_SUCCESS:
@@ -72,7 +78,7 @@ export default function (state = initState, action) {
     case GET_USER_CODES_SUCCESS:
       return {
         ...state,
-        isFetching: false,
+        isLoadingCodes: false,
         error: null,
         userCodes: action.payload.codesArr,
         settings: action.payload.settings,
@@ -82,7 +88,7 @@ export default function (state = initState, action) {
     case DELETE_USER_CODE_SUCCESS:
       return {
         ...state,
-        isFetching: false,
+        isLoadingCodes: false,
         error: null,
         userCodes: action.payload.codesArr,
         settings: action.payload.settings,
@@ -90,20 +96,25 @@ export default function (state = initState, action) {
     case UPDATE_USER_CODE_SUCCESS:
       return {
         ...state,
-        isFetching: false,
+        isLoadingCodes: false,
         error: null,
         userCodes: action.payload,
       };
-    case DELETE_USER_CODE_ERROR:
-    case UPDATE_USER_CODE_ERROR:
-    case CREATE_USER_CODE_ERROR:
-    case GET_USER_CODES_ERROR:
     case DELETE_USER_ERROR:
     case UPDATE_USER_ERROR:
     case GET_USER_ERROR:
       return {
         ...state,
         isFetching: false,
+        error: action.error,
+      };
+    case DELETE_USER_CODE_ERROR:
+    case UPDATE_USER_CODE_ERROR:
+    case CREATE_USER_CODE_ERROR:
+    case GET_USER_CODES_ERROR:
+      return {
+        ...state,
+        isLoadingCodes: false,
         error: action.error,
       };
     case CLEAR_USER_CODES:

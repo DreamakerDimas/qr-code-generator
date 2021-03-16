@@ -7,6 +7,7 @@ import {
   deleteUserAction,
   getUserAction,
 } from '../../actions/actionCreator';
+import Spinner from '../../components/Spinner/Spinner';
 import UserCodes from '../../components/User/UserCodes';
 import UserEdit from '../../components/User/UserEdit';
 import UserInfo from '../../components/User/UserInfo';
@@ -15,7 +16,7 @@ import styles from './UserPage.module.sass';
 const UserPage = (props) => {
   const { getUser, deleteUser, clearUser, user, history } = props;
   const { id } = useParams();
-  const { userData } = user;
+  const { userData, isLoadingCodes } = user;
 
   const [showEdit, setShowEdit] = useState(false);
   const [showCodes, setShowCodes] = useState(false);
@@ -37,22 +38,30 @@ const UserPage = (props) => {
 
     return clearUser;
   }, []);
-
+  console.log(user.isFetching);
   return (
-    <div className={styles.outerContainer}>
-      <UserInfo user={userData} />
+    <>
+      {user.isFetching ? (
+        <center>
+          <Spinner />
+        </center>
+      ) : (
+        <div className={styles.outerContainer}>
+          <UserInfo user={userData} />
 
-      <div className={styles.buttonsContainer}>
-        <Button onClick={showCodesHandler}>Show QR Codes</Button>
+          <div className={styles.buttonsContainer}>
+            <Button onClick={showCodesHandler}>Show QR Codes</Button>
 
-        <Button onClick={showEditHandler}>Edit</Button>
+            <Button onClick={showEditHandler}>Edit</Button>
 
-        <Button onClick={deleteHandler}>Delete</Button>
-      </div>
+            <Button onClick={deleteHandler}>Delete</Button>
+          </div>
 
-      {showEdit && <UserEdit user={userData} />}
-      {showCodes && <UserCodes />}
-    </div>
+          {showEdit && <UserEdit user={userData} />}
+          {showCodes && <UserCodes />}
+        </div>
+      )}
+    </>
   );
 };
 

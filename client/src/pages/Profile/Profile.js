@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import ProfileDisplay from '../../components/Profile/ProfileDisplay';
 import ProfileEdit from '../../components/Profile/ProfileEdit';
+import Spinner from '../../components/Spinner/Spinner';
 import styles from './Profile.module.sass';
 
 const Profile = (props) => {
@@ -21,10 +22,16 @@ const Profile = (props) => {
     <div className={styles.profileContainer}>
       {isEdit ? (
         <>
-          <ProfileEdit user={user} />
-          <Button className={styles.backBut} onClick={changePageHandler}>
-            Back
-          </Button>
+          {!props.profile.isFetching ? ( // !!!
+            <>
+              <ProfileEdit user={user} />
+              <Button className={styles.backBut} onClick={changePageHandler}>
+                Back
+              </Button>
+            </>
+          ) : (
+            <Spinner />
+          )}
         </>
       ) : (
         <>

@@ -88,11 +88,11 @@ export function* deleteQRCodeSaga(action) {
     const { codesArr, settings } = yield select((state) => state.qrCodes);
 
     const updatedArr = codesArr.filter((code) => code.id !== action.payload);
-    settings.offset = settings.offset - 1;
+    const newSettings = { ...settings, offset: settings.offset-- };
 
     yield put({
       type: DELETE_MY_CODE_SUCCESS,
-      payload: { updatedArr, settings },
+      payload: { codesArr: updatedArr, settings: newSettings },
     });
   } catch (err) {
     yield put({ type: DELETE_MY_CODE_ERROR, error: err.response });

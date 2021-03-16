@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useParams, withRouter } from 'react-router';
 import AllUsers from '../../components/AdminPanel/AllUsers';
 import CreateUser from '../../components/AdminPanel/CreateUser';
+import FindUser from '../../components/AdminPanel/FindUser';
 import { ADMIN_PANEL_STATES } from '../../constants';
 import styles from './AdminPanel.module.sass';
 
@@ -29,7 +30,7 @@ const AdminPanel = (props) => {
         return <AllUsers />;
 
       case FIND_USER:
-        return <div>Find user</div>;
+        return <FindUser />;
 
       case CREATE_USER:
         return <CreateUser history={history} ALL_USERS={ALL_USERS} />;

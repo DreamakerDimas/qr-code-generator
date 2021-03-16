@@ -4,6 +4,7 @@ import { clearMyCodesAction, getMyCodes } from '../../actions/actionCreator';
 
 import QRCardsList from '../../components/QRCardsList/QRCardsList';
 import QRCreateForm from '../../components/QRCreateForm/QRCreateForm';
+import Spinner from '../../components/Spinner/Spinner';
 
 const QRCodes = (props) => {
   const { getCodes, clearCodes, qrCodes } = props;
@@ -42,7 +43,12 @@ const QRCodes = (props) => {
       <QRCreateForm />
 
       <QRCardsList codesArr={codesArr} />
-      {isFetching && 'loading'}
+
+      {isFetching && (
+        <center>
+          <Spinner />
+        </center>
+      )}
     </>
   );
 };

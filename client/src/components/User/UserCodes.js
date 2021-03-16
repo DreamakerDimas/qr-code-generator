@@ -7,10 +7,18 @@ import {
 
 import QRCardsList from '../../components/QRCardsList/QRCardsList';
 import AdminQRCreateForm from '../QRCreateForm/AdminQRCreateForm';
+import Spinner from '../Spinner/Spinner';
 
 const UserCodes = (props) => {
   const { getUserCodes, clearUserCodes, user } = props;
-  const { isFetching, error, haveMore, userCodes, userData, settings } = user;
+  const {
+    isLoadingCodes,
+    error,
+    haveMore,
+    userCodes,
+    userData,
+    settings,
+  } = user;
 
   const payload = {
     userId: userData.id,
@@ -31,7 +39,7 @@ const UserCodes = (props) => {
         window.innerHeight + document.documentElement.scrollTop;
       const isLoadNotNeed =
         !haveMore ||
-        isFetching ||
+        isLoadingCodes ||
         currentPosition !== document.documentElement.offsetHeight;
 
       if (isLoadNotNeed) return;
@@ -44,7 +52,7 @@ const UserCodes = (props) => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [isFetching, haveMore, settings]);
+  }, [isLoadingCodes, haveMore, settings]);
 
   return (
     <>
@@ -55,7 +63,7 @@ const UserCodes = (props) => {
         userId={userData.id}
         isAdminPanel={true}
       />
-      {isFetching && 'loading'}
+      {isLoadingCodes && <Spinner />}
     </>
   );
 };

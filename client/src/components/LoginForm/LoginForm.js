@@ -5,6 +5,7 @@ import { Field, reduxForm } from 'redux-form';
 import { authActionLogin } from '../../actions/actionCreator';
 import styles from './LoginForm.module.sass';
 import { Button } from '@material-ui/core';
+import Spinner from '../Spinner/Spinner';
 
 const LoginForm = (props) => {
   const { handleSubmit, submitting, login, auth, history } = props;
@@ -35,6 +36,12 @@ const LoginForm = (props) => {
           placeholder="Password"
           className={styles.field}
         />
+
+        {auth.isFetching && (
+          <div className={styles.spinnerContainer}>
+            <Spinner />
+          </div>
+        )}
 
         {auth.error && <span>{auth.error.statusText}</span>}
         <Button className={styles.submit} type="submit" disabled={submitting}>

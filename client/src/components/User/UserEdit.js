@@ -2,7 +2,7 @@ import { Button, InputLabel } from '@material-ui/core';
 import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router';
-import { Field, initialize, reduxForm } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import { updateUserAction } from '../../actions/actionCreator';
 import { ROLES } from '../../constants';
 import styles from './UserEdit.module.sass';
@@ -10,7 +10,7 @@ import styles from './UserEdit.module.sass';
 const { USER, ADMIN } = ROLES;
 
 const UserEdit = (props) => {
-  const { user, handleSubmit, submitting, updateUser } = props;
+  const { user, handleSubmit, submitting, initialize, updateUser } = props;
   const { id } = useParams();
 
   const submitHandler = useCallback(
@@ -22,7 +22,8 @@ const UserEdit = (props) => {
   );
 
   useEffect(() => {
-    initialize({ role: USER });
+    const { name, email, role } = user;
+    initialize({ name, email, role });
   }, []);
 
   return (
