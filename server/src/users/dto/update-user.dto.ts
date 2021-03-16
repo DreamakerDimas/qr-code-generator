@@ -8,7 +8,7 @@ export class UpdateUserDto {
   readonly email: string;
 
   @MinLength(6)
-  readonly password: string;
+  password: string;
 
   @IsEnum(Role)
   readonly role: Role;

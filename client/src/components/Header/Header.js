@@ -9,11 +9,11 @@ import { withRouter } from 'react-router';
 import styles from './Header.module.sass';
 
 const Header = (props) => {
-  const { profile, auth, getProfile, logout, history } = props;
+  const { profile, auth, getProfile, logout, history, location } = props;
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    getProfile();
+    getProfile(history, location);
   }, [auth]);
 
   useEffect(() => {
@@ -63,7 +63,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  getProfile: () => dispatch(getProfileAction()),
+  getProfile: (history, location) =>
+    dispatch(getProfileAction(history, location)),
   logout: () => dispatch(logoutAction()),
 });
 

@@ -19,6 +19,10 @@ export function* getProfileSaga(action) {
     yield put({ type: GET_PROFILE_SUCCESS, payload: data });
   } catch (err) {
     yield put({ type: GET_PROFILE_ERROR, error: err.response });
+
+    // if not a public - redirect
+    if (!location.pathname.includes('/redirect/'))
+      action.history.replace('/login');
   }
 }
 

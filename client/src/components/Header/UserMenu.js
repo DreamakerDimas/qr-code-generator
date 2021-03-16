@@ -37,6 +37,7 @@ const UserMenu = (props) => {
   const handleLogout = () => {
     window.localStorage.removeItem(ACCESS_TOKEN);
     logout();
+    history.push('/login');
     handleClose();
   };
 

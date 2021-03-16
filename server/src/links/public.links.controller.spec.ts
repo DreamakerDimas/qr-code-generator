@@ -1,19 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AdminLinksController } from './admin.links.controller';
+import { PublicLinksController } from './public.links.controller';
 
 describe('LinksController', () => {
-  let controller: AdminLinksController;
+  let controller: PublicLinksController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [AdminLinksController],
+      controllers: [PublicLinksController],
     }).compile();
 
-    controller = module.get<AdminLinksController>(AdminLinksController);
+    controller = module.get<PublicLinksController>(PublicLinksController);
   });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 });
-a;

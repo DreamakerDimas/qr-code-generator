@@ -15,6 +15,9 @@ const {
   DELETE_MY_CODE_REQUEST,
   DELETE_MY_CODE_SUCCESS,
   DELETE_MY_CODE_ERROR,
+  GET_PUBLIC_QR_CODE_REQUEST,
+  GET_PUBLIC_QR_CODE_SUCCESS,
+  GET_PUBLIC_QR_CODE_ERROR,
 } = CODES_ACTIONS;
 
 export function* getMyCodesSaga(action) {
@@ -93,5 +96,16 @@ export function* deleteQRCodeSaga(action) {
     });
   } catch (err) {
     yield put({ type: DELETE_MY_CODE_ERROR, error: err.response });
+  }
+}
+
+export function* getQRCodeSaga(action) {
+  yield put({ type: GET_PUBLIC_QR_CODE_REQUEST });
+  try {
+    const { data } = yield restController.getCodePublic(action.payload);
+
+    yield put({ type: GET_PUBLIC_QR_CODE_SUCCESS, payload: data });
+  } catch (err) {
+    yield put({ type: GET_PUBLIC_QR_CODE_ERROR, error: err.response });
   }
 }

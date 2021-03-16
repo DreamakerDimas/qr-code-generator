@@ -39,7 +39,7 @@ const QRCardsList = (props) => {
         deleteMyCode(id);
       }
     },
-    [isAdminPanel, userId]
+    [userId, isAdminPanel]
   );
 
   return (

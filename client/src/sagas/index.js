@@ -14,6 +14,7 @@ import {
   createQRCodeSaga,
   updateQRCodeSaga,
   deleteQRCodeSaga,
+  getQRCodeSaga,
 } from './codesSagas';
 import {
   createUserSaga,
@@ -37,6 +38,7 @@ function* rootSaga() {
   yield takeLatest(CODES_ACTIONS.CREATE_QR_CODE, createQRCodeSaga);
   yield takeLatest(CODES_ACTIONS.UPDATE_MY_CODE, updateQRCodeSaga);
   yield takeLatest(CODES_ACTIONS.DELETE_MY_CODE, deleteQRCodeSaga);
+  yield takeLatest(CODES_ACTIONS.GET_PUBLIC_QR_CODE, getQRCodeSaga);
   // ADMIN
   yield takeLatest(ADMIN_ACTIONS.GET_USERS, getUsersSaga);
   yield takeLatest(ADMIN_ACTIONS.CREATE_USER, createUserSaga);

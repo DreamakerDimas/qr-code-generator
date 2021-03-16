@@ -5,6 +5,7 @@ import codesReducer from './codesReducer';
 import { reducer as formReducer } from 'redux-form';
 import usersReducer from './usersReducer';
 import userReducer from './userReducer';
+import redirectReducer from './redirectReducer';
 
 const rootReducer = combineReducers({
   form: formReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   qrCodes: codesReducer,
   users: usersReducer,
   user: userReducer,
+  redirect: redirectReducer,
 });
 
 export default rootReducer;

@@ -37,6 +37,10 @@ export class LinksService {
     return await this.linksRepository.findOne({ id, user });
   }
 
+  async getOnePublic(id: string): Promise<Links | null> {
+    return await this.linksRepository.findOne({ id });
+  }
+
   async create(linkObj: CreateLinkDto): Promise<Links> {
     try {
       const link = await this.linksRepository.create(linkObj);

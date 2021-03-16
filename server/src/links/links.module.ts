@@ -5,10 +5,11 @@ import { AdminLinksController } from './admin.links.controller';
 import { LinksController } from './links.controller';
 import { Links } from './links.entity';
 import { LinksService } from './links.service';
+import { PublicLinksController } from './public.links.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Links]), UserModule],
-  controllers: [LinksController, AdminLinksController],
+  controllers: [LinksController, AdminLinksController, PublicLinksController],
   providers: [LinksService],
 })
 export class LinksModule {}

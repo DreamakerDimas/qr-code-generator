@@ -55,6 +55,8 @@ export class UserService {
     if (!user.id) {
       console.error("User didn't exist");
     }
+
+    if (userDto.password) userDto.password = await hash(userDto.password);
     await this.userRepository.update(id, userDto);
 
     return await this.userRepository.findOne(id);

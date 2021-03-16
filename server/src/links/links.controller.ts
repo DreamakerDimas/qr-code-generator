@@ -35,7 +35,6 @@ export class LinksController {
   // GET ALL FOR MY
   @Get(':limit/:offset')
   getAll(@Request() req, @Param() param): Promise<any> {
-    console.log(param);
     return this.linksService.getAll(req.user.id, param);
   }
 
@@ -43,7 +42,7 @@ export class LinksController {
   @Get(':id')
   getOne(@Param() param: IdParam, @Request() req): Promise<Links | null> {
     const { id } = param;
-    return this.linksService.getOne(id, req.user.id);
+    return this.linksService.getOne(id, { id: req.user.id });
   }
 
   //POST CREATE MY

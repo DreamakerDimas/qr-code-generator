@@ -13,6 +13,8 @@ export const getMyCodesRequest = (settings) =>
 export const createQRCode = (data) => http.post('links/user', data);
 export const updateMyCode = (data) => http.put('links/user', data);
 export const deleteMyCode = (data) => http.delete(`links/user/${data}`);
+// QR code for redirect
+export const getCodePublic = (data) => http.get(`links/public/${data}`);
 
 // admin: users
 export const getUsers = (settings) =>
