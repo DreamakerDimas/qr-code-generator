@@ -1,0 +1,36 @@
+version: '3.3'
+services:
+  front-react:
+    build:
+      context: './client'
+      dockerfile: Dockerfile
+    depends_on:
+      - server-nest
+    volumes:
+      - ./client:/client
+      - ./client/node_modules
+    ports:
+      - '3000:3000'
+
+  server-nest:
+    build:
+      context: './server'
+      dockerfile: Dockerfile
+    ports:
+      - '4000:4000'
+    depends_on:
+      - postgres-db
+    volumes:
+      - ./server:/server
+      - /server/node_modules
+    restart: on-failure
+
+  postgres-db:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=qrgen
+    ports:
+      - '5432:5432'
+    restart: on-failure
