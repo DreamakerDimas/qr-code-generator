@@ -118,6 +118,7 @@ export function* createUserSaga(action) {
 export function* updateUserSaga(action) {
   yield put({ type: UPDATE_USER_REQUEST });
   try {
+    console.log(action.payload);
     const { data } = yield restController.updateUser(action.payload);
 
     yield put({ type: UPDATE_USER_SUCCESS, payload: data });

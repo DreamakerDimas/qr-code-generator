@@ -10,7 +10,7 @@ import styles from './UserEdit.module.sass';
 const { USER, ADMIN } = ROLES;
 
 const UserEdit = (props) => {
-  const { user, handleSubmit, submitting, initialize, updateUser } = props;
+  const { user, handleSubmit, submitting, updateUser } = props;
   const { id } = useParams();
 
   const submitHandler = useCallback(
@@ -20,11 +20,6 @@ const UserEdit = (props) => {
     },
     [id]
   );
-
-  useEffect(() => {
-    const { name, email, role } = user;
-    initialize({ name, email, role });
-  }, []);
 
   return (
     <>
@@ -68,7 +63,7 @@ const UserEdit = (props) => {
             </div>
 
             <div>
-              <span>Role: </span>
+              <span>Role: {user.role}</span>
               <Field name="role" component="select" className={styles.field}>
                 <option value={USER}>User</option>
                 <option value={ADMIN}>Admin</option>

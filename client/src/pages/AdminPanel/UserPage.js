@@ -38,7 +38,7 @@ const UserPage = (props) => {
 
     return clearUser;
   }, []);
-  console.log(user.isFetching);
+
   return (
     <>
       {user.isFetching ? (
