@@ -68,6 +68,7 @@ const UserEdit = (props) => {
             </div>
 
             <div>
+              <span>Role: </span>
               <Field name="role" component="select" className={styles.field}>
                 <option value={USER}>User</option>
                 <option value={ADMIN}>Admin</option>

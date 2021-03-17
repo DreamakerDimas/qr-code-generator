@@ -40,6 +40,12 @@ export class UserController {
     return this.userService.getById(id);
   }
 
+  @Post('find')
+  getMatched(@Body() body): Promise<any> {
+    const { user, settings } = body;
+    return this.userService.getMatched(user, settings);
+  }
+
   @Post()
   @HttpCode(HttpStatus.CREATED)
   create(@Body() user: CreateUserDto): Promise<User> {

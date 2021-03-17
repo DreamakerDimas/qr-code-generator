@@ -2,10 +2,25 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { hash } from 'src/functions';
 import { deleteAllUserFiles, deleteFile } from 'src/gstorage';
-import { Repository, DeleteResult } from 'typeorm';
+import { Repository, DeleteResult, Like } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './users.entity';
+
+const createFindData = (user) => {
+  const { name, email, role } = user;
+
+  if (name && email)
+    return { name: Like(`%${name}%`), email: Like(`%${email}%`), role };
+
+  if (name) return { name: Like(`%${name}%`), role };
+
+  if (email) return { email: Like(`%${email}%`), role };
+
+  return { role };
+};
+
+const isHaveMore = (count, limit, offset) => count > +limit + +offset;
 
 @Injectable()
 export class UserService {
@@ -23,13 +38,30 @@ export class UserService {
       skip: offset,
     });
 
-    const haveMore = count > +offset + +limit;
+    const haveMore = isHaveMore(count, limit, offset);
 
     return { usersArr, haveMore };
   }
 
   async getById(id: string): Promise<User | null> {
     return await this.userRepository.findOneOrFail(id);
+  }
+
+  async getMatched(user, settings) {
+    const { limit, offset } = settings;
+    const { order } = user;
+    const findData = createFindData(user);
+
+    const [usersArr, count] = await this.userRepository.findAndCount({
+      where: findData,
+      order: { createdAt: order },
+      take: limit,
+      skip: offset,
+    });
+
+    const haveMore = isHaveMore(count, limit, offset);
+
+    return { usersArr, haveMore };
   }
 
   async findOne(params: object, isAuth = false): Promise<User | null> {

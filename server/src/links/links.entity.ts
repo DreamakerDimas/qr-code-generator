@@ -26,10 +26,10 @@ export class Links {
   fileUrl: string; // full URL path
 
   @Column()
-  innerUrl: string;
+  innerUrl: string; // encoded application URL
 
   @Column()
-  outerUrl: string;
+  outerUrl: string; // destination URL
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

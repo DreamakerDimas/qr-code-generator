@@ -10,6 +10,7 @@ import { ADMIN_PANEL_STATES } from '../../constants';
 import { Button } from '@material-ui/core';
 import styles from './AllUsers.module.sass';
 import Spinner from '../Spinner/Spinner';
+import UsersList from '../UsersList/UsersList';
 
 const { ALL_USERS } = ADMIN_PANEL_STATES;
 
@@ -49,22 +50,12 @@ const AllUsers = (props) => {
     (id) => {
       history.push(`${ALL_USERS}/${id}`);
     },
-    [history, ALL_USERS]
+    [history]
   );
 
   return (
     <>
-      <div className={styles.container}>
-        {users.usersArr.map((user) => {
-          return (
-            <div className={styles.userContainer} key={user.id}>
-              <UserInfo user={user} />
-
-              <Button onClick={() => detailsHandler(user.id)}>Details</Button>
-            </div>
-          );
-        })}
-      </div>
+      <UsersList usersArr={users.usersArr} detailsHandler={detailsHandler} />
 
       {isFetching && (
         <div className={styles.spinnerContainer}>

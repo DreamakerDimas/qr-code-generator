@@ -19,7 +19,7 @@ export const logoutAction = () => ({
 export const getProfileAction = (history, location) => ({
   type: PROFILE_ACTIONS.GET_PROFILE,
   history,
-  location
+  location,
 });
 export const updateProfileAction = (payload) => ({
   type: PROFILE_ACTIONS.UPDATE_PROFILE,
@@ -81,6 +81,11 @@ export const clearUserStoreAction = () => ({
 });
 export const clearAllUsersAction = () => ({
   type: ADMIN_ACTIONS.CLEAR_ALL_USERS,
+});
+export const findUsersAction = (payload, isSubmit = false) => ({
+  type: ADMIN_ACTIONS.FIND_USERS,
+  payload,
+  isSubmit,
 });
 
 // *** ADMIN user_codes ***

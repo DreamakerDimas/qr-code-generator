@@ -13,7 +13,7 @@ import UserPage from './pages/AdminPanel/UserPage';
 import RedirectionPage from './pages/RedirectionPage/RedirectionPage';
 import AdminHoc from './components/AdminHoc/AdminHoc';
 
-const { ALL_USERS } = ADMIN_PANEL_STATES;
+const { ALL_USERS, FIND_USER } = ADMIN_PANEL_STATES;
 class App extends Component {
   render() {
     return (
@@ -37,6 +37,11 @@ class App extends Component {
             <Route
               exact
               path={`/admin_panel/${ALL_USERS}/:id`}
+              component={AdminHoc(UserPage)}
+            />
+            <Route
+              exact
+              path={`/admin_panel/${FIND_USER}/:id`}
               component={AdminHoc(UserPage)}
             />
             <Route render={() => <Redirect to={{ pathname: '/codes' }} />} />

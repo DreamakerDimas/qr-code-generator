@@ -1,61 +1,61 @@
-import { Button } from '@material-ui/core';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
-import { ROLES } from '../../constants';
+import {
+  clearAllUsersAction,
+  findUsersAction,
+} from '../../actions/actionCreator';
+import { ADMIN_PANEL_STATES } from '../../constants';
+import FindUsersForm from '../FindUsersForm/FindUsersForm';
+import UsersList from '../UsersList/UsersList';
 import styles from './FindUser.module.sass';
 
-const { USER, ADMIN } = ROLES;
+const { FIND_USER } = ADMIN_PANEL_STATES;
 
 const FindUser = (props) => {
-  const { handleSubmit, submitting, initialize } = props;
+  const { users, history, settings, findUsers } = props;
+  const { isFetching, haveMore } = users;
 
-  const submitHandler = useCallback((values) => {
-    console.log(values);
-  }, []);
+  const [filterValues, setFilterValues] = useState({});
 
+  const updateFilterValues = (values) => {
+    setFilterValues(values);
+  };
+
+  // scroll lazy load
   useEffect(() => {
-    initialize({ role: USER, order: 'DESC' });
-  }, []);
+    const handleScroll = () => {
+      const currentPosition =
+        window.innerHeight + document.documentElement.scrollTop;
+      const isLoadNotNeed =
+        !haveMore ||
+        isFetching ||
+        currentPosition !== document.documentElement.offsetHeight;
+
+      if (isLoadNotNeed) return;
+
+      findUsers(filterValues);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isFetching, haveMore, filterValues, settings]);
+
+  const detailsHandler = useCallback(
+    (id) => {
+      history.push(`${FIND_USER}/${id}`);
+    },
+    [history]
+  );
 
   return (
-    <div className={styles.container}>
-      <form onSubmit={handleSubmit(submitHandler)}>
-        <Field
-          name="name"
-          component="input"
-          type="text"
-          placeholder="Name Filter"
-          className={styles.field}
-        />
+    <div>
+      <FindUsersForm updateFilterValues={updateFilterValues} />
 
-        <Field
-          name="email"
-          component="input"
-          type="text"
-          placeholder="Email Filter"
-          className={styles.field}
-        />
-
-        <Field name="role" component="select" className={styles.field}>
-          <option value={USER}>User</option>
-          <option value={ADMIN}>Admin</option>
-        </Field>
-
-        <Field name="order" component="select" className={styles.field}>
-          <option value={'ASC'}>ASC</option>
-          <option value={'DESC'}>DESC</option>
-        </Field>
-
-        {/* error */}
-        <Button
-          className={styles.createBut}
-          type="submit"
-          disabled={submitting}
-        >
-          FIND
-        </Button>
-      </form>
+      <UsersList usersArr={users.usersArr} detailsHandler={detailsHandler} />
     </div>
   );
 };
@@ -64,11 +64,10 @@ const mapStateToProps = (state) => {
   return { users: state.users };
 };
 
-// const mapDispatchToProps = (dispatch) => ({
-//     findUsers: () => dispatch()
-// })
+const mapDispatchToProps = (dispatch) => ({
+  findUsers: (data) => dispatch(findUsersAction(data)),
+});
 
-export default connect(
-  mapStateToProps,
-  null
-)(reduxForm({ form: 'findUser' })(FindUser));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(FindUser)
+);

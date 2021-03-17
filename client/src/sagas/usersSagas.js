@@ -30,6 +30,10 @@ const {
   DELETE_USER_CODE_REQUEST,
   DELETE_USER_CODE_SUCCESS,
   DELETE_USER_CODE_ERROR,
+  FIND_USERS_REQUEST,
+  FIND_USERS_SUCCESS,
+  FIND_USERS_ERROR,
+  CLEAR_ALL_USERS,
 } = ADMIN_ACTIONS;
 
 const getAllUsersLocation = (pathname, id) => {
@@ -58,6 +62,34 @@ export function* getUsersSaga(action) {
     });
   } catch (err) {
     yield put({ type: GET_USERS_ERROR, error: err.response });
+  }
+}
+
+export function* findUsersSaga(action) {
+  if (action.isSubmit) yield put({ type: CLEAR_ALL_USERS });
+
+  yield put({ type: FIND_USERS_REQUEST });
+  try {
+    const { settings, usersArr: oldUsersArr } = yield select(
+      (state) => state.users
+    );
+
+    const {
+      data: { usersArr, haveMore },
+    } = yield restController.findUsers({ user: action.payload, settings });
+
+    const newSettings = {
+      ...settings,
+      offset: settings.offset + settings.limit,
+    };
+    const updatedUsersArr = [...oldUsersArr, ...usersArr];
+
+    yield put({
+      type: FIND_USERS_SUCCESS,
+      payload: { usersArr: updatedUsersArr, settings: newSettings, haveMore },
+    });
+  } catch (err) {
+    yield put({ type: FIND_USERS_ERROR, error: err.response });
   }
 }
 

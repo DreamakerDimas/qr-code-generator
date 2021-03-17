@@ -9,6 +9,9 @@ const {
   CREATE_USER_SUCCESS,
   CREATE_USER_ERROR,
   CLEAR_ALL_USERS,
+  FIND_USERS_REQUEST,
+  FIND_USERS_SUCCESS,
+  FIND_USERS_ERROR,
 } = ADMIN_ACTIONS;
 
 const initState = {
@@ -26,6 +29,7 @@ export default function (state = initState, action) {
   switch (action.type) {
     case CREATE_USER_REQUEST:
     case GET_USERS_REQUEST:
+    case FIND_USERS_REQUEST:
       return {
         ...state,
         isFetching: true,
@@ -40,6 +44,7 @@ export default function (state = initState, action) {
         settings: action.payload.settings,
       };
     case GET_USERS_SUCCESS:
+    case FIND_USERS_SUCCESS:
       return {
         ...state,
         isFetching: false,
@@ -50,6 +55,7 @@ export default function (state = initState, action) {
       };
     case CREATE_USER_ERROR:
     case GET_USERS_ERROR:
+    case FIND_USERS_ERROR:
       return {
         ...state,
         isFetching: false,

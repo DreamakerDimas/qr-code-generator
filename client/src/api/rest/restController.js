@@ -23,6 +23,7 @@ export const getUserById = (data) => http.get(`users/${data}`);
 export const createUser = (data) => http.post('users', data);
 export const updateUser = (data) => http.put(`users/${data.id}`, data.body);
 export const deleteUser = (data) => http.delete(`users/${data}`);
+export const findUsers = (data) => http.post('users/find', data);
 
 // admin: user_codes
 export const getUserCodes = (data) =>
