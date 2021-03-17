@@ -10,7 +10,24 @@ export class UserIdParam {
   readonly userId: string;
 }
 
+export class IdAndUserIdParam {
+  @IsUUID()
+  readonly id: string;
+
+  @IsUUID()
+  readonly userId: string;
+}
+
+export class OptionsParam {
+  // !!! move to common dto's
+  @IsString()
+  readonly limit: number;
+
+  @IsString()
+  readonly offset: number;
+}
 export class UserIdOptionsParam {
+  // implements/extends OptionsParam?
   @IsUUID()
   readonly userId: string;
 
@@ -19,12 +36,4 @@ export class UserIdOptionsParam {
 
   @IsString()
   readonly offset: number;
-}
-
-export class IdAndUserIdParam {
-  @IsUUID()
-  readonly id: string;
-
-  @IsUUID()
-  readonly userId: string;
 }

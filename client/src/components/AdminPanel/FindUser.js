@@ -1,14 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import {
-  clearAllUsersAction,
-  findUsersAction,
-} from '../../actions/actionCreator';
+import { findUsersAction } from '../../actions/actionCreator';
 import { ADMIN_PANEL_STATES } from '../../constants';
 import FindUsersForm from '../FindUsersForm/FindUsersForm';
 import UsersList from '../UsersList/UsersList';
-import styles from './FindUser.module.sass';
 
 const { FIND_USER } = ADMIN_PANEL_STATES;
 

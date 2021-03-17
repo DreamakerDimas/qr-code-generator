@@ -1,5 +1,5 @@
 import { Button, InputLabel } from '@material-ui/core';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router';
 import { Field, reduxForm } from 'redux-form';

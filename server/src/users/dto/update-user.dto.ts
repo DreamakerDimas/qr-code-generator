@@ -3,7 +3,6 @@ import {
   IsEnum,
   IsNotEmpty,
   IsOptional,
-  Min,
   MinLength,
 } from 'class-validator';
 import { Role } from '../../constants';

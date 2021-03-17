@@ -8,7 +8,7 @@ import styles from './Profile.module.sass';
 
 const Profile = (props) => {
   const [user, setUser] = useState(null);
-  const [isEdit, setIsEdit] = useState(false); // route
+  const [isEdit, setIsEdit] = useState(false); // !!! route
 
   useEffect(() => {
     setUser(props.profile.data);

@@ -18,7 +18,7 @@ import { Links } from './links.entity';
 import { CreateLinkDto } from './dto/create-link.dto';
 import { UpdateMyLinkDto } from './dto/update-link.dto';
 import * as uuid from 'uuid';
-import { IdParam } from './dto/id-param-link.dto';
+import { IdParam, OptionsParam } from './dto/id-param-link.dto';
 import { CreateMyLinkBody } from './dto/create-link-body.dto';
 import { UserService } from 'src/users/users.service';
 
@@ -34,7 +34,7 @@ export class LinksController {
   // Role USER
   // GET ALL FOR MY
   @Get(':limit/:offset')
-  getAll(@Request() req, @Param() param): Promise<any> {
+  getAll(@Request() req, @Param() param: OptionsParam): Promise<any> {
     return this.linksService.getAll(req.user.id, param);
   }
 

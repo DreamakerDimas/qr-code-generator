@@ -1,4 +1,4 @@
-import { Button, InputLabel, StylesProvider } from '@material-ui/core';
+import { Button, InputLabel } from '@material-ui/core';
 import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';

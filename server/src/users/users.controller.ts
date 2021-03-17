@@ -20,6 +20,7 @@ import { Role } from '../constants';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { IdParam } from './dto/id-param.dto';
+import { OptionsParam } from 'src/links/dto/id-param-link.dto';
 
 @Roles(Role.ADMIN)
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -28,9 +29,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get(':limit/:offset')
-  getAll(@Param() param): Promise<User[]> {
-    // !!! validation
-
+  getAll(@Param() param: OptionsParam): Promise<User[]> {
     return this.userService.getAll(param);
   }
 
@@ -42,6 +41,7 @@ export class UserController {
 
   @Post('find')
   getMatched(@Body() body): Promise<any> {
+    // !!! validate
     const { user, settings } = body;
     return this.userService.getMatched(user, settings);
   }
