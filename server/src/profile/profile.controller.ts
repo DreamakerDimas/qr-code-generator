@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Put, Request, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
-import { UpdateProfileDto } from './dto/update-profile.dto';
+import { UpdateUserDto } from 'src/users/dto/update-user.dto';
 import { ProfileService } from './profile.service';
 
 @UseGuards(JwtAuthGuard)
@@ -15,10 +15,7 @@ export class ProfileController {
   }
 
   @Put()
-  updateProfile(
-    @Body() params: UpdateProfileDto,
-    @Request() req,
-  ): Promise<any> {
+  updateProfile(@Body() params: UpdateUserDto, @Request() req): Promise<any> {
     const { id } = req.user;
     return this.profileService.updateProfile(id, params);
   }
